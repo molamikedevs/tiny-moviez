@@ -1,0 +1,53 @@
+@use 'variable' as *;
+
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) 1fr minmax(260px, 320px);
+  height: 100vh;
+  overflow: hidden;
+
+  /* TABLET (iPad) BREAKPOINT */
+  @media (max-width: 1024px) {
+    grid-template-columns: 200px 1fr;
+  }
+
+  /* MOBILE BREAKPOINT */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 70px;
+  }
+}
+
+.sidebar,
+.rightbar {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 2rem 2rem;
+  background: $color-primary-light;
+  overflow-y: auto;
+}
+
+.main {
+  padding: 2rem;
+  overflow-y: auto;
+  background: $color-secondary;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.rightbar {
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}

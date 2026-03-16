@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <!--
+      <link rel="shortcut icon" href="src/img/favicon.png" type="image/x-icon" />
+    -->
+
+    <link rel="stylesheet" href="src/sass/main.scss" />
+    <script type="module" defer src="src/js/controller.js"></script>
+
+    <title>Tiny Moviez // Search over 1,000,000 movies</title>
+  </head>
+
+  <body class="app">
+    <div class="dashboard">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar__logo">
+          <h2 class="logo">
+            TINY<br />
+            MOVIEZ
+          </h2>
+        </div>
+
+        <!-- MENU -->
+        <div class="sidebar__section">
+          <p class="sidebar__title">Menu</p>
+
+          <ul class="sidebar__menu">
+            <li class="menu__item active">Home</li>
+            <li class="menu__item">Discover</li>
+          </ul>
+        </div>
+
+        <!-- LIBRARY -->
+        <div class="sidebar__section">
+          <p class="sidebar__title">Library</p>
+
+          <ul class="sidebar__menu">
+            <li class="menu__item">Recent</li>
+            <li class="menu__item">Top Rated</li>
+            <li class="menu__item">Watchlist</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main">
+        <!-- TOP NAV -->
+        <header class="topbar">
+          <nav class="topbar__nav">
+            <button class="nav__link">Movies</button>
+            <button class="nav__link active">TV Shows</button>
+            <button class="nav__link">Anime</button>
+          </nav>
+
+          <div class="topbar__search">
+            <input type="text" placeholder="Search" class="search__input" />
+            <svg class="search__icon">
+              <use href="src/img/icons.svg#icon-search"></use>
+            </svg>
+          </div>
+        </header>
+
+        <!-- HERO / SLIDER -->
+        <section class="hero">
+          <div class="hero__content">
+            <h1 class="hero__title">The Crown</h1>
+
+            <div class="hero__actions">
+              <button class="btn btn--watchlist">+ Watchlist</button>
+              <button class="btn btn--primary">Details</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- POPULAR MOVIES -->
+        <section class="movies">
+          <h2 class="section__title">Popular on TinyMoviez</h2>
+
+          <div class="movies__grid">
+            <!-- MOVIE CARD -->
+            <article class="movie-card">
+              <img
+                src="src/img/loki.jpg"
+                class="movie-card__poster"
+                alt="Loki"
+              />
+
+              <div class="movie-card__info">
+                <h3 class="movie-card__title">Loki</h3>
+
+                <div class="movie-card__meta">
+                  <span>6 Ep</span>
+                  <span>Superhero</span>
+                </div>
+
+                <div class="movie-card__actions">
+                  <button class="btn btn--add">+</button>
+                  <button class="btn btn--watch">Details</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="movie-card">
+              <img
+                src="src/img/Chernobyl.jpg"
+                class="movie-card__poster"
+                alt="Chernobyl"
+              />
+
+              <div class="movie-card__info">
+                <h3 class="movie-card__title">Chernobyl</h3>
+
+                <div class="movie-card__meta">
+                  <span>5 Ep</span>
+                  <span>Mini Series</span>
+                </div>
+
+                <div class="movie-card__actions">
+                  <button class="btn btn--add">+</button>
+                  <button class="btn btn--watch">Details</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="movie-card">
+              <img
+                src="src/img/rick.jpg"
+                class="movie-card__poster"
+                alt="Rick and Morty"
+              />
+
+              <div class="movie-card__info">
+                <h3 class="movie-card__title">Rick and Morty</h3>
+
+                <div class="movie-card__meta">
+                  <span>49 Ep</span>
+                  <span>Fantasy</span>
+                </div>
+
+                <div class="movie-card__actions">
+                  <button class="btn btn--add">+</button>
+                  <button class="btn btn--watch">Details</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="rightbar">
+        <!-- CONTINUE WATCHING -->
+        <section class="widget">
+          <div class="widget__header">
+            <h3>Bookmarks</h3>
+            <a href="#">See More</a>
+          </div>
+
+          <div class="bookmark__list">
+            <div class="bookmark__item">
+              <p>WandaVision</p>
+              <span>1 Episode left</span>
+              <button class="btn btn--watch">Details</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- TOP RATED -->
+        <section class="widget">
+          <div class="widget__header">
+            <h3>Top Rated</h3>
+            <a href="#">See More</a>
+          </div>
+
+          <div class="toprated__list">
+            <div class="toprated__item">
+              <p>Supernatural</p>
+              <button class="btn btn--watch">Details</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- GENRES -->
+        <section class="widget">
+          <div class="widget__header">
+            <h3>Genres</h3>
+          </div>
+
+          <div class="genres__grid">
+            <button class="genre">Drama</button>
+            <button class="genre">Sitcom</button>
+            <button class="genre">Superhero</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </body>
+</html>

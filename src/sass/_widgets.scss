@@ -1,0 +1,59 @@
+@use 'variable' as *;
+
+.widget {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.widget__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.widget__header h3 {
+  font-size: 18px;
+}
+
+.bookmark__item {
+  background: $color-secondary;
+  padding: 15px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: underline;
+  text-decoration-color: $color-tertiary;
+  font-size: 0.8rem;
+}
+
+.bookmark__item {
+  background: $color-secondary;
+  padding: 15px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.genres__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.genre {
+  padding: 12px;
+  background: $color-secondary;
+  border-radius: 8px;
+  border: none;
+  color: $color-primary;
+  cursor: pointer;
+}

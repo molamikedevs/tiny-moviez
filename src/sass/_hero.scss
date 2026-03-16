@@ -1,0 +1,32 @@
+@use 'variable' as *;
+
+.hero {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../img/hero.jpg');
+
+  background-size: cover;
+  background-position: center;
+
+  height: 260px;
+
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 40px;
+  margin-bottom: 40px;
+}
+
+.hero__title {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.hero__actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}

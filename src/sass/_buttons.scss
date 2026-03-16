@@ -1,0 +1,29 @@
+@use 'variable' as *;
+
+.btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: $color-tertiary;
+  color: black;
+  font-weight: 600;
+}
+
+.btn--watchlist {
+  background: $color-primary-light;
+  color: $color-primary;
+}
+
+.btn--watch {
+  background: $color-tertiary;
+}
+
+.btn--add {
+  background: $color-primary-light;
+  color: $color-primary;
+  width: 40px;
+}
