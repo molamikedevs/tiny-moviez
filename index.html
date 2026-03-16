@@ -36,8 +36,25 @@
           <p class="sidebar__title">Menu</p>
 
           <ul class="sidebar__menu">
-            <li class="menu__item active">Home</li>
-            <li class="menu__item">Discover</li>
+            <li class="menu__item active" data-type="home">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-home"></use>
+              </svg>
+              Home
+            </li>
+
+            <li class="menu__item" data-type="discover">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-film"></use>
+              </svg>
+              Movies
+            </li>
+            <li class="menu__item" data-type="series">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-display"></use>
+              </svg>
+              TV Shows
+            </li>
           </ul>
         </div>
 
@@ -46,9 +63,33 @@
           <p class="sidebar__title">Library</p>
 
           <ul class="sidebar__menu">
-            <li class="menu__item">Recent</li>
-            <li class="menu__item">Top Rated</li>
-            <li class="menu__item">Watchlist</li>
+            <li class="menu__item" data-type="recent">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-clock"></use>
+              </svg>
+              Recent
+            </li>
+
+            <li class="menu__item" data-type="top">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-star-empty"></use>
+              </svg>
+              Top Rated
+            </li>
+
+            <li class="menu__item" data-type="watchlist">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-trending-up"></use>
+              </svg>
+              Trending
+            </li>
+
+            <li class="menu__item" data-type="watchlist">
+              <svg class="menu__icon">
+                <use href="src/img/icons.svg#icon-eye"></use>
+              </svg>
+              Watched movies
+            </li>
           </ul>
         </div>
       </aside>
@@ -58,9 +99,9 @@
         <!-- TOP NAV -->
         <header class="topbar">
           <nav class="topbar__nav">
-            <button class="nav__link">Movies</button>
-            <button class="nav__link active">TV Shows</button>
-            <button class="nav__link">Anime</button>
+            <button class="nav__link" data-type="movie">Movies</button>
+            <button class="nav__link active" data-type="tv">TV Shows</button>
+            <button class="nav__link" data-type="anime">Anime</button>
           </nav>
 
           <div class="topbar__search">
@@ -73,13 +114,39 @@
 
         <!-- HERO / SLIDER -->
         <section class="hero">
+          <div class="hero__media">
+            <img class="hero__img" src="src/img/hero.jpg" alt="Hero banner" />
+          </div>
+
+          <div class="hero__overlay"></div>
+
           <div class="hero__content">
             <h1 class="hero__title">The Crown</h1>
 
             <div class="hero__actions">
-              <button class="btn btn--watchlist">+ Watchlist</button>
+              <button class="btn btn--watchlist">
+                <svg class="btn__icon">
+                  <use href="src/img/icons.svg#icon-plus"></use>
+                </svg>
+                Watchlist
+              </button>
+
               <button class="btn btn--primary">Details</button>
             </div>
+          </div>
+
+          <div class="hero__controls">
+            <button class="slider__btn slider__btn--prev">
+              <svg class="slider__icon">
+                <use href="src/img/icons.svg#icon-arrow-left2"></use>
+              </svg>
+            </button>
+
+            <button class="slider__btn slider__btn--next">
+              <svg class="slider__icon">
+                <use href="src/img/icons.svg#icon-arrow-right2"></use>
+              </svg>
+            </button>
           </div>
         </section>
 
@@ -89,6 +156,7 @@
 
           <div class="movies__grid">
             <!-- MOVIE CARD -->
+            <!--
             <article class="movie-card">
               <img
                 src="src/img/loki.jpg"
@@ -105,8 +173,7 @@
                 </div>
 
                 <div class="movie-card__actions">
-                  <button class="btn btn--add">+</button>
-                  <button class="btn btn--watch">Details</button>
+                  <button class="btn btn--details">Details</button>
                 </div>
               </div>
             </article>
@@ -127,8 +194,7 @@
                 </div>
 
                 <div class="movie-card__actions">
-                  <button class="btn btn--add">+</button>
-                  <button class="btn btn--watch">Details</button>
+                  <button class="btn btn--details">Details</button>
                 </div>
               </div>
             </article>
@@ -149,11 +215,11 @@
                 </div>
 
                 <div class="movie-card__actions">
-                  <button class="btn btn--add">+</button>
-                  <button class="btn btn--watch">Details</button>
+                  <button class="btn btn--details">Details</button>
                 </div>
               </div>
             </article>
+            -->
           </div>
         </section>
       </main>
@@ -171,7 +237,7 @@
             <div class="bookmark__item">
               <p>WandaVision</p>
               <span>1 Episode left</span>
-              <button class="btn btn--watch">Details</button>
+              <button class="btn btn--right">Details</button>
             </div>
           </div>
         </section>
@@ -186,7 +252,7 @@
           <div class="toprated__list">
             <div class="toprated__item">
               <p>Supernatural</p>
-              <button class="btn btn--watch">Details</button>
+              <button class="btn btn--right">Details</button>
             </div>
           </div>
         </section>

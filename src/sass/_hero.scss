@@ -1,16 +1,10 @@
 @use 'variable' as *;
 
 .hero {
-  background:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('../img/hero.jpg');
-
-  background-size: cover;
-  background-position: center;
-
+  position: relative;
   height: 260px;
-
   border-radius: 16px;
+  overflow: hidden;
 
   display: flex;
   align-items: center;
@@ -18,6 +12,39 @@
 
   padding: 40px;
   margin-bottom: 40px;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transition: opacity 0.4s ease;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+
+  z-index: 1;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
 }
 
 .hero__title {
@@ -29,4 +56,72 @@
   margin-top: 20px;
   display: flex;
   gap: 15px;
+}
+
+.hero__controls {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 15rem;
+  margin-top: 15rem;
+
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider__btn {
+  pointer-events: auto;
+
+  width: 3rem;
+  height: 3rem;
+
+  border-radius: 50%;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+
+  cursor: pointer;
+}
+
+.slider__icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: $color-primary;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8;
+
+  padding: 1rem 1.5rem;
+  border-radius: 0.8rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: #14b8a6;
+  color: black;
+}
+
+.btn--watchlist {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.btn__icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+  margin-right: 0.5rem;
 }

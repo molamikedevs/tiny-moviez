@@ -18,12 +18,14 @@
   color: $color-primary;
 }
 
-.btn--watch {
+.btn--details {
   background: $color-tertiary;
+  text-align: center;
+  margin-left: 3rem;
 }
 
-.btn--add {
-  background: $color-primary-light;
-  color: $color-primary;
-  width: 40px;
+.btn--right {
+  background: $color-tertiary;
+  text-align: center;
+  margin-top: 0.8rem;
 }
