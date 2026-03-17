@@ -27,7 +27,7 @@ export default class View {
   }
 
   clear() {
-    this._parentElement.innerHtml = '';
+    this._parentElement.innerHTML = '';
   }
 
   spinner() {

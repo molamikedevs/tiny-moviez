@@ -104,12 +104,15 @@
             <button class="nav__link" data-type="anime">Anime</button>
           </nav>
 
-          <div class="topbar__search">
+          <form class="topbar__search">
             <input type="text" placeholder="Search" class="search__input" />
-            <svg class="search__icon">
-              <use href="src/img/icons.svg#icon-search"></use>
-            </svg>
-          </div>
+
+            <button class="search__btn">
+              <svg class="search__icon">
+                <use href="src/img/icons.svg#icon-search"></use>
+              </svg>
+            </button>
+          </form>
         </header>
 
         <!-- HERO / SLIDER -->
@@ -149,7 +152,7 @@
             </button>
           </div>
         </section>
-
+        <div class="modal"></div>
         <!-- POPULAR MOVIES -->
         <section class="movies">
           <h2 class="section__title">Popular on TinyMoviez</h2>
@@ -222,6 +225,8 @@
             -->
           </div>
         </section>
+
+        <div class="pagination"></div>
       </main>
 
       <!-- RIGHT SIDEBAR -->
@@ -237,7 +242,7 @@
             <div class="bookmark__item">
               <p>WandaVision</p>
               <span>1 Episode left</span>
-              <button class="btn btn--right">Details</button>
+              <button class="btn btn--details">Details</button>
             </div>
           </div>
         </section>
@@ -252,7 +257,7 @@
           <div class="toprated__list">
             <div class="toprated__item">
               <p>Supernatural</p>
-              <button class="btn btn--right">Details</button>
+              <button class="btn btn--details">Details</button>
             </div>
           </div>
         </section>

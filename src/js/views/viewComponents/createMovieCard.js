@@ -4,7 +4,7 @@ export const createMovieCard = function (data) {
   const title = data.title || data.name;
 
   return `
-      <article class="movie-card">
+      <article class="movie-card" data-id="${data.id}" data-type="${data.media_type || 'movie'}">
         <img
           src="${IMG_URL + poster_path}"
           class="movie-card__poster"

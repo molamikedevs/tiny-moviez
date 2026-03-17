@@ -73,6 +73,14 @@
   pointer-events: none;
 }
 
+@media (max-width: 768px) {
+  .hero__controls {
+    margin-top: 16rem;
+    padding: 0 6rem;
+    gap: 5rem;
+  }
+}
+
 .slider__btn {
   pointer-events: auto;
 
