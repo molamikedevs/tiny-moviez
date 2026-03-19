@@ -118,13 +118,13 @@
 }
 
 .btn--primary {
-  background: #14b8a6;
+  background: $color-tertiary;
   color: black;
 }
 
 .btn--watchlist {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: $color-secondary-light;
+  color: $color-primary;
 }
 
 .btn__icon {

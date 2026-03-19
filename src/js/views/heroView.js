@@ -26,8 +26,30 @@ class HeroView extends View {
 
     this._img.src = IMG + movie.backdrop_path;
     this._title.textContent = title;
-  }
 
+    const btnDetails = document.querySelector('.hero .btn--primary');
+    const btnBookmark = document.querySelector('.hero .btn--bookmark');
+
+    // Inject data into Details
+    if (btnDetails) {
+      btnDetails.dataset.id = movie.id;
+      btnDetails.dataset.type = movie.media_type;
+
+      if (!btnDetails.classList.contains('btn--details')) {
+        btnDetails.classList.add('btn--details');
+      }
+    }
+
+    // 👉 Inject data into Bookmark
+    if (btnBookmark) {
+      btnBookmark.dataset.id = movie.id;
+      btnBookmark.dataset.type = movie.media_type;
+
+      if (!btnBookmark.classList.contains('btn--bookmark')) {
+        btnBookmark.classList.add('btn--bookmark');
+      }
+    }
+  }
   addHandlerHeroNav() {
     this._btnNext.addEventListener('click', () => {
       this._next();

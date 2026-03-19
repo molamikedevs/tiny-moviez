@@ -27,15 +27,3 @@ export const AJAX = async function (url, api) {
     throw error;
   }
 };
-
-export const debounce = function (fn, delay = 400) {
-  let timer;
-
-  return function (...args) {
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
-};

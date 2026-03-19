@@ -18,20 +18,20 @@
   font-size: 1.4rem;
   font-weight: 600;
 
-  background: #1f2937;
-  color: #fff;
+  background: $color-secondary-light;
+  color: $color-primary;
 
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .pagination__btn:hover {
-  background: #374151;
+  background: $color-secondary-dark;
   transform: translateY(-2px);
 }
 
 .pagination__page {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: $color-secondary-dark;
 }

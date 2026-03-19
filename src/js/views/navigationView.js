@@ -31,6 +31,19 @@ class NavigationView {
       handler(type);
     });
   }
+
+  addHandleSidebar(handler) {
+    this._sidebarNav.addEventListener('click', e => {
+      const btn = e.target.closest('.menu__item');
+      if (!btn) return;
+
+      const type = btn.dataset.type;
+      // Guard clause: If the data isn't in our library yet (like 'bookmarks'), do nothing for now
+      if (type === 'bookmarks' || type === 'recent') return;
+
+      handler(type);
+    });
+  }
 }
 
 export default new NavigationView();
