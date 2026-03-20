@@ -36,14 +36,14 @@
 }
 
 .btn--bookmark {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: $color-secondary;
+  color: $color-primary;
   padding: 0.3;
   text-align: center;
 }
 
 .btn--bookmark:hover {
   background: $color-tertiary;
-  color: #111;
+  color: $color-secondary;
   transform: translateY(-2px);
 }

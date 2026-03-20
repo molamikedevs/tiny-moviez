@@ -22,6 +22,7 @@ export const state = {
   },
 
   details: {},
+  bookmarks: [],
 
   ui: {
     category: 'tv', // Default category
@@ -123,3 +124,34 @@ export const loadDetails = async function (type, id) {
     throw err;
   }
 };
+
+export const persistBookmarks = function () {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
+export const addBookmark = function (item) {
+  // Push the entire object (whether it's TV, Anime, or Movie) into the array
+  state.bookmarks.push(item);
+  persistBookmarks();
+};
+
+export const deleteBookmark = function (id) {
+  // Find the exact position of the item we want to remove
+  const index = state.bookmarks.findIndex(el => el.id === id);
+
+  // Remove 1 element at that index
+  state.bookmarks.splice(index, 1);
+
+  // Mark current item as NOT bookmarked
+  if (id === state.details.id) state.details.bookmarked = false;
+  persistBookmarks();
+};
+
+// Initialize the bookmarks from LocalStorage when the app loads
+const initBookmarks = function () {
+  const storage = localStorage.getItem('bookmarks');
+
+  // If there is data in storage, parse the JSON string back into an array/objects
+  if (storage) state.bookmarks = JSON.parse(storage);
+};
+initBookmarks();

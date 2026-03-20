@@ -2,24 +2,15 @@ class NavigationView {
   _topbarNav = document.querySelector('.topbar__nav');
   _sidebarNav = document.querySelector('.sidebar');
 
-  handleActive(parent, itemClass) {
-    parent.addEventListener('click', e => {
-      const btn = e.target.closest(itemClass);
-      if (!btn) return;
+  //Syncs active state across the entire app
+  setGlobalActive(type) {
+    // 1. Remove active class from ALL navigation links
+    const allLinks = document.querySelectorAll('.nav__link, .menu__item');
+    allLinks.forEach(link => link.classList.remove('active'));
 
-      // remove active from all
-      parent
-        .querySelectorAll(itemClass)
-        .forEach(link => link.classList.remove('active'));
-
-      // add active to clicked
-      btn.classList.add('active');
-    });
-  }
-
-  initNavigation() {
-    this.handleActive(this._topbarNav, '.nav__link');
-    this.handleActive(this._sidebarNav, '.menu__item');
+    // 2. Add active class to ANY link that matches the current type
+    const matchingLinks = document.querySelectorAll(`[data-type="${type}"]`);
+    matchingLinks.forEach(link => link.classList.add('active'));
   }
 
   addHandleCategory(handler) {
@@ -38,8 +29,9 @@ class NavigationView {
       if (!btn) return;
 
       const type = btn.dataset.type;
-      // Guard clause: If the data isn't in our library yet (like 'bookmarks'), do nothing for now
-      if (type === 'bookmarks' || type === 'recent') return;
+
+      // Keep guard clause for unbuilt features
+      if (type === 'recent') return;
 
       handler(type);
     });

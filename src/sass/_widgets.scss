@@ -1,59 +1,326 @@
 @use 'variable' as *;
 
+.rightbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1.5rem;
+  background: $color-secondary-light;
+  overflow-y: auto;
+  height: 100vh;
+
+  /* Custom scrollbar for rightbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-tertiary;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
 .widget {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
+  flex-shrink: 0; /* Prevent widgets from shrinking */
+
+  &:last-child {
+    margin-bottom: 1rem; /* Extra space at bottom for better scrolling */
+  }
 }
 
 .widget__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $color-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  a {
+    color: $color-tertiary;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba($color-tertiary, 0.1);
+      text-decoration: none;
+    }
+  }
 }
 
-.widget__header h3 {
-  font-size: 18px;
-}
-
-.bookmark__item {
-  background: $color-secondary;
-  padding: 15px;
-  border-radius: 10px;
-
+// Trending Now Widget
+.trending__list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.6rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-tertiary;
+    border-radius: 3px;
+  }
 }
 
-a {
-  color: $color-primary;
-  text-decoration: underline;
-  text-decoration-color: $color-tertiary;
-  font-size: 0.8rem;
-}
-
-.bookmark__item {
+.trending__item {
   background: $color-secondary;
-  padding: 15px;
+  padding: 0.7rem;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.02);
 
+  &:hover {
+    transform: translateX(5px);
+    background: lighten($color-secondary, 3%);
+    border-color: rgba($color-tertiary, 0.2);
+  }
+
+  &-rank {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: $color-tertiary;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  &-info {
+    flex: 1;
+    min-width: 0; /* Prevent text overflow */
+
+    h4 {
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      font-size: 0.65rem;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+  }
+
+  .trending__badge {
+    background: $color-tertiary;
+    color: $color-secondary;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
+
+// Recommendations Widget
+.recommendations__list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.8rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-tertiary;
+    border-radius: 3px;
+  }
 }
 
+.recommendation__item {
+  background: $color-secondary;
+  padding: 0.8rem;
+  border-radius: 12px;
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+
+  &:hover {
+    background: lighten($color-secondary, 3%);
+    border-color: rgba($color-tertiary, 0.2);
+
+    .recommendation__play {
+      opacity: 1;
+      transform: scale(1);
+      background: $color-tertiary;
+    }
+  }
+
+  &-poster {
+    width: 45px;
+    height: 60px;
+    background: linear-gradient(
+      135deg,
+      $color-secondary-dark,
+      $color-secondary-light
+    );
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    &::after {
+      content: '🎬';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2rem;
+      opacity: 0.5;
+    }
+  }
+
+  &-info {
+    flex: 1;
+    min-width: 0; /* Prevent text overflow */
+
+    h4 {
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .match {
+      color: #4caf50;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+  }
+
+  .recommendation__play {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba($color-tertiary, 0.8);
+    border: none;
+    color: $color-secondary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transform: scale(0.9);
+    transition: all 0.2s;
+    flex-shrink: 0;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+  }
+}
+
+// Genres Widget
 .genres__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-tertiary;
+    border-radius: 3px;
+  }
 }
 
 .genre {
-  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.8rem;
   background: $color-secondary;
-  border-radius: 8px;
-  border: none;
-  color: $color-primary;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #aaa;
   cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    border-color: $color-tertiary;
+    background: lighten($color-secondary, 5%);
+    color: $color-primary;
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background: $color-tertiary;
+    color: $color-secondary;
+    font-weight: 600;
+    border-color: $color-tertiary;
+  }
+}
+
+// Optional: Add a "Load More" button for widgets
+.widget__footer {
+  margin-top: 0.5rem;
+  text-align: center;
+
+  button {
+    background: none;
+    border: 1px solid rgba($color-tertiary, 0.3);
+    color: $color-tertiary;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: $color-tertiary;
+      color: $color-secondary;
+      border-color: $color-tertiary;
+    }
+  }
 }

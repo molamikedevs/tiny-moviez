@@ -15,8 +15,29 @@ const controlCategory = function (type) {
   model.state.ui.category = type;
   model.state.ui.page = 1;
 
+  // Sync the Topbar and Sidebar visual states
+  navigationView.setGlobalActive(type);
+
+  // Map data types to dynamic titles and update the UI
+  const pageTitles = {
+    trending: 'Popular on TinyMoviez',
+    movie: 'Discover Movies',
+    tv: 'Trending TV Shows',
+    anime: 'Top Anime',
+    topRated: 'Top Rated Content',
+    bookmarks: 'Your Bookmarks',
+  };
+
+  // Update title (fallback to 'Movies' just in case)
+  gridView.updateTitle(pageTitles[type] || 'Movies');
+
   // 2. Retrieve cached data dynamically using bracket notation
-  const data = model.state.library[type];
+  let data;
+  if (type === 'bookmarks') {
+    data = model.state.bookmarks;
+  } else {
+    data = model.state.library[type];
+  }
   model.state.ui.activeData = data;
 
   // 3. Get only the 10 results needed for page 1
@@ -95,8 +116,30 @@ const controlDetails = async function (type, id) {
   }
 };
 
-const controlNavigation = function () {
-  navigationView.initNavigation();
+const controlToggleBookmark = function (id) {
+  // 1. Find the movie object in our currently active data or trending data
+  let category = model.state.ui.activeData.find(c => c.id === +id);
+
+  // If clicked from the Hero banner, it might be in trending
+  if (!category) {
+    category = model.state.library.trending.find(t => t.id === +id);
+  }
+
+  if (!category) return;
+
+  // 2. Check if it's already bookmarked
+  const isBookmarked = model.state.bookmarks.some(b => b.id === +id);
+  if (!isBookmarked) {
+    model.addBookmark(category);
+  } else {
+    model.deleteBookmark(+id);
+  }
+
+  // 4. Re-render the grid so the UI updates
+  gridView.render(model.getSearchResult(model.state.ui.activeData));
+
+  // Instantly updates the Hero button UI!
+  heroView.renderHero();
 };
 
 /**
@@ -106,8 +149,6 @@ const controlNavigation = function () {
  * This keeps the Controller clean of any DOM manipulation.
  */
 const init = async function () {
-  controlNavigation();
-
   // Registering event handlers
   navigationView.addHandleCategory(controlCategory);
   navigationView.addHandleSidebar(controlCategory);
@@ -118,6 +159,7 @@ const init = async function () {
   await controlDashboard();
 
   heroView.addHandlerHeroNav();
+  gridView.addHandlerBookmark(controlToggleBookmark);
 
   detailsView.handleDetailsClick(function (type, id) {
     controlDetails(type, id);

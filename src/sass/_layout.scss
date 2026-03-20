@@ -6,48 +6,113 @@
   height: 100vh;
   overflow: hidden;
 
-  /* TABLET (iPad) BREAKPOINT */
+  /* TABLET BREAKPOINT */
   @media (max-width: 1024px) {
     grid-template-columns: 200px 1fr;
+
+    .rightbar {
+      display: none;
+    }
   }
 
   /* MOBILE BREAKPOINT */
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 70px;
+    grid-template-rows: 1fr auto;
+    height: 100vh;
+    overflow: hidden;
   }
 }
 
-.sidebar,
-.rightbar {
+.sidebar {
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding: 2rem 2rem;
+  padding: 2rem 1.5rem;
   background: $color-secondary-light;
   overflow-y: auto;
-}
+  height: 100vh;
 
-.main {
-  padding: 2rem;
-  overflow-y: auto;
-  background: $color-secondary;
+  // Fix bottom alignment
+  &::after {
+    content: '';
+    margin-top: auto;
+  }
 
   @media (max-width: 768px) {
-    padding: 1rem;
+    height: auto;
+    padding: 0.8rem 1rem;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    border-top: 1px solid $color-secondary-dark;
+
+    &__logo,
+    &__title {
+      display: none;
+    }
+
+    &__section {
+      width: 100%;
+      margin: 0;
+    }
+
+    &__menu {
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0;
+    }
+
+    .menu__item {
+      flex: 1;
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 0.5rem;
+      margin: 0;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      span {
+        display: block;
+        font-size: 0.7rem;
+      }
+    }
+
+    .menu__icon {
+      display: block;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
   }
 }
 
-.rightbar {
-  @media (max-width: 1024px) {
-    display: none;
+.main {
+  padding: 1.5rem;
+  overflow-y: auto;
+  background: $color-secondary;
+  height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 1rem 1rem 80px 1rem;
+    height: 100vh;
+    overflow-y: auto;
   }
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: $color-secondary-dark;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background: $color-secondary-light;
 }

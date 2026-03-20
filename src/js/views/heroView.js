@@ -1,3 +1,4 @@
+import { state } from '../model';
 import View from './view';
 
 class HeroView extends View {
@@ -44,6 +45,14 @@ class HeroView extends View {
     if (btnBookmark) {
       btnBookmark.dataset.id = movie.id;
       btnBookmark.dataset.type = movie.media_type;
+
+      // Check if this movie is currently saved
+      const isBookmarked = state.bookmarks.some(b => b.id === movie.id);
+      if (isBookmarked) {
+        btnBookmark.textContent = 'Bookmarked';
+      } else {
+        btnBookmark.textContent = 'Bookmark';
+      }
 
       if (!btnBookmark.classList.contains('btn--bookmark')) {
         btnBookmark.classList.add('btn--bookmark');

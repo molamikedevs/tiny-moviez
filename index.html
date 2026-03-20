@@ -36,7 +36,7 @@
           <p class="sidebar__title">Menu</p>
 
           <ul class="sidebar__menu">
-            <li class="menu__item active" data-type="trending">
+            <li class="menu__item active" data-type="home">
               <svg class="menu__icon">
                 <use href="src/img/icons.svg#icon-home"></use>
               </svg>
@@ -94,7 +94,7 @@
               <svg class="menu__icon">
                 <use href="src/img/icons.svg#icon-bookmarks"></use>
               </svg>
-              Bookmark
+              Bookmarks
             </li>
           </ul>
         </div>
@@ -124,19 +124,16 @@
         <!-- HERO / SLIDER -->
         <section class="hero">
           <div class="hero__media">
-            <img class="hero__img" src="src/img/hero.jpg" alt="Hero banner" />
+            <img class="hero__img" src="#" alt="Hero banner" />
           </div>
 
           <div class="hero__overlay"></div>
 
           <div class="hero__content">
-            <h1 class="hero__title">The Crown</h1>
+            <h1 class="hero__title"></h1>
 
             <div class="hero__actions">
-              <button class="btn btn--bookmark" data-id="..." data-type="...">
-                <svg class="btn__icon">
-                  <use href="src/img/icons.svg#icon-bookmark"></use>
-                </svg>
+              <button class="btn btn--bookmark" data-id=".." data-type="..">
                 Bookmark
               </button>
 
@@ -158,73 +155,91 @@
             </button>
           </div>
         </section>
-        <div class="modal"></div>
+        <div class="modal">
+          <!--
+          <div class="modal__content">
+        <button class="modal__close">×</button>
+
+        <img class="modal__poster" src="${data.poster_path ? IMG + data.poster_path : ''}" alt="${title}" />
+
+        <div class="modal__info">
+          <h2 class="modal__title">${title}</h2>
+
+          <div class="modal__meta">
+            <span class="modal__rating">⭐ ${rating}</span>
+            <span class="modal__divider">|</span>
+            <span>${year}</span>
+            <span class="modal__divider">|</span>
+            <span>${country}</span>
+          </div>
+
+          <div class="modal__overview-container">
+            <h3 class="modal__subtitle">Overview</h3>
+            <p class="modal__overview">
+              ${data.overview || 'No overview available for this title.'}
+            </p>
+          </div>
+
+          <div class="modal__stats">
+            <div class="stat">
+              <span class="stat__label">Popularity</span>
+              <span class="stat__value">${popularity}</span>
+            </div>
+            <div class="stat">
+              <span class="stat__label">Vote Count</span>
+              <span class="stat__value">${votes}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+          -->
+        </div>
         <!-- POPULAR MOVIES -->
         <section class="movies">
           <h2 class="section__title">Popular on TinyMoviez</h2>
 
           <div class="movies__grid">
             <!-- MOVIE CARD -->
+
             <!--
-            <article class="movie-card" >
+            <article
+              class="movie-card"
+              data-id="${id}"
+              data-type="${media_type}"
+            >
               <img
-                src="src/img/loki.jpg"
+                src="${IMG_URL + poster_path}"
                 class="movie-card__poster"
-                alt="Loki"
+                alt="${title}"
               />
 
               <div class="movie-card__info">
-                <h3 class="movie-card__title">Loki</h3>
+                <h3 class="movie-card__title">${title}</h3>
 
                 <div class="movie-card__meta">
-                  <span>6 Ep</span>
-                  <span>Superhero</span>
+                  <span>${vote_average.toFixed(1)} ⭐</span>
+                  <span>${release_date?.slice(0, 4) || ''}</span>
                 </div>
 
                 <div class="movie-card__actions">
-                  <button class="btn btn--details">Details</button>
-                </div>
-              </div>
-            </article>
+                  <button
+                    class="btn btn--details"
+                    data-id="${id}"
+                    data-type="${media_type}"
+                  >
+                    Details
+                  </button>
 
-            <article class="movie-card">
-              <img
-                src="src/img/Chernobyl.jpg"
-                class="movie-card__poster"
-                alt="Chernobyl"
-              />
-
-              <div class="movie-card__info">
-                <h3 class="movie-card__title">Chernobyl</h3>
-
-                <div class="movie-card__meta">
-                  <span>5 Ep</span>
-                  <span>Mini Series</span>
-                </div>
-
-                <div class="movie-card__actions">
-                  <button class="btn btn--details">Details</button>
-                </div>
-              </div>
-            </article>
-
-            <article class="movie-card">
-              <img
-                src="src/img/rick.jpg"
-                class="movie-card__poster"
-                alt="Rick and Morty"
-              />
-
-              <div class="movie-card__info">
-                <h3 class="movie-card__title">Rick and Morty</h3>
-
-                <div class="movie-card__meta">
-                  <span>49 Ep</span>
-                  <span>Fantasy</span>
-                </div>
-
-                <div class="movie-card__actions">
-                  <button class="btn btn--details">Details</button>
+                  <button
+                    class="btn btn--bookmark"
+                    data-id="${id}"
+                    data-type="${media_type}"
+                    title="Add to Bookmarks"
+                  >
+                    <svg class="btn__icon">
+                      <use href="${icons}#icon-bookmark"></use>
+                    </svg>
+                  </button>
                 </div>
               </div>
             </article>
@@ -237,51 +252,74 @@
 
       <!-- RIGHT SIDEBAR -->
       <aside class="rightbar">
-        <!-- CONTINUE WATCHING -->
+        <!-- TRENDING NOW -->
         <section class="widget">
           <div class="widget__header">
-            <h3>Bookmarks</h3>
-            <a href="#">See More</a>
+            <h3>Trending Now 🔥</h3>
+            <a href="#">View All</a>
           </div>
 
-          <div class="bookmark__list">
-            <div class="bookmark__item">
-              <p>WandaVision</p>
-              <span>1 Episode left</span>
-              <button class="btn btn--details" data-id="..." data-type="...">
-                Details
-              </button>
+          <div class="trending__list">
+            <div class="trending__item">
+              <span class="trending__item-rank">1</span>
+              <div class="trending__item-info">
+                <h4>Dune: Part Two</h4>
+                <p>⭐ 8.7 <span class="trending__badge">+2</span></p>
+              </div>
             </div>
+            <!-- More trending items... -->
           </div>
         </section>
 
-        <!-- TOP RATED -->
+        <!-- RECOMMENDED FOR YOU -->
         <section class="widget">
           <div class="widget__header">
-            <h3>Top Rated</h3>
-            <a href="#">See More</a>
+            <h3>Recommended 🎯</h3>
+            <a href="#">More</a>
           </div>
 
-          <div class="toprated__list">
-            <div class="toprated__item">
-              <p>Supernatural</p>
-              <button class="btn btn--details" data-id="..." data-type="...">
-                Details
+          <div class="recommendations__list">
+            <div class="recommendation__item">
+              <div class="recommendation__item-poster"></div>
+              <div class="recommendation__item-info">
+                <h4>The Last of Us</h4>
+                <span class="match">98% Match</span>
+              </div>
+              <button class="recommendation__play" title="Play">
+                <svg>
+                  <use href="src/img/icons.svg#icon-play"></use>
+                </svg>
               </button>
             </div>
+            <!-- More recommendations... -->
           </div>
         </section>
 
         <!-- GENRES -->
         <section class="widget">
           <div class="widget__header">
-            <h3>Genres</h3>
+            <h3>Popular Genres</h3>
           </div>
 
           <div class="genres__grid">
+            <button class="genre active">Action</button>
+            <button class="genre">Adventure</button>
+            <button class="genre">Animation</button>
+            <button class="genre">Comedy</button>
+            <button class="genre">Crime</button>
+            <button class="genre">Documentary</button>
             <button class="genre">Drama</button>
-            <button class="genre">Sitcom</button>
-            <button class="genre">Superhero</button>
+            <button class="genre">Family</button>
+            <button class="genre">Fantasy</button>
+            <button class="genre">Horror</button>
+            <button class="genre">Mystery</button>
+            <button class="genre">Romance</button>
+            <button class="genre">Sci-Fi</button>
+            <button class="genre">Thriller</button>
+          </div>
+
+          <div class="widget__footer">
+            <button>Load More Genres</button>
           </div>
         </section>
       </aside>

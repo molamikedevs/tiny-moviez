@@ -1,70 +1,134 @@
 @use 'variable' as *;
 
 .topbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  background: $color-secondary;
+  position: sticky;
+  top: -2rem;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba($color-secondary, 0.95);
+
+  @media (max-width: 768px) {
+    padding: 0.8rem 1rem;
+    gap: 1rem;
+  }
 
   &__nav {
     display: flex;
-    gap: 2rem;
+    gap: 0.5rem;
+    background: rgba($color-secondary-light, 0.5);
+    padding: 0.3rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+
+    @media (max-width: 480px) {
+      gap: 0.2rem;
+    }
 
     .nav__link {
       background: none;
       border: none;
-      font-size: 1.2rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #aaa;
       cursor: pointer;
-      color: $color-primary;
+      border-radius: 30px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+
+      @media (max-width: 480px) {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      &:hover {
+        color: $color-primary;
+        background: rgba(255, 255, 255, 0.05);
+      }
 
       &.active {
-        color: $color-primary;
-        border-bottom: 2px solid $color-tertiary;
+        background: $color-tertiary;
+        color: $color-secondary;
+        font-weight: 600;
       }
     }
   }
 
   &__search {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
     position: relative;
-    width: 100%;
+    flex: 1;
+    max-width: 400px;
+    min-width: 200px;
+    margin-right: 1rem;
 
-    .search__icon {
-      width: 1rem;
-      height: 1rem;
-      fill: #555;
-      position: absolute;
-      right: 1.5rem;
-      pointer-events: none;
+    @media (max-width: 768px) {
+      min-width: 150px;
+    }
+
+    @media (max-width: 480px) {
+      min-width: 120px;
     }
 
     .search__input {
       width: 100%;
-      max-width: 400px;
-      padding: 1rem 1.5rem;
-      margin-left: 2rem;
-      border: none;
+      padding: 0.7rem 1.2rem;
+      padding-right: 2.8rem;
       background: $color-secondary-light;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 50px;
       color: $color-primary;
-      border-radius: 0.8rem;
-      outline: none;
-    }
-  }
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
 
-  /* MOBILE BREAKPOINT */
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-
-    &__nav {
-      justify-content: center;
-      gap: 1rem;
-
-      .nav__link {
-        font-size: 1rem;
+      &::placeholder {
+        color: #666;
+        font-size: 0.85rem;
       }
+
+      &:focus {
+        outline: none;
+        border-color: $color-tertiary;
+        box-shadow: 0 0 0 3px rgba($color-tertiary, 0.1);
+      }
+    }
+
+    .search__btn {
+      position: absolute;
+      right: 0.3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      width: 2.2rem;
+      height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba($color-tertiary, 0.1);
+
+        .search__icon {
+          fill: $color-tertiary;
+        }
+      }
+    }
+
+    .search__icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      fill: #666;
+      transition: fill 0.2s ease;
     }
   }
 }
