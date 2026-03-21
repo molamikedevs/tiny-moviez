@@ -17,6 +17,10 @@ importers:
       sass:
         specifier: ^1.98.0
         version: 1.98.0
+    devDependencies:
+      '@parcel/config-default':
+        specifier: ^2.16.4
+        version: 2.16.4(@parcel/core@2.16.4(@swc/helpers@0.5.19))(@swc/helpers@0.5.19)
 
 packages:
 

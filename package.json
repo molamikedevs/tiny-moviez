@@ -24,5 +24,8 @@
       "lmdb",
       "msgpackr-extract"
     ]
+  },
+  "devDependencies": {
+    "@parcel/config-default": "^2.16.4"
   }
 }
