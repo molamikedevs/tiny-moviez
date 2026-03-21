@@ -26,7 +26,6 @@
   background: $color-tertiary;
   color: #111;
   font-weight: 600;
-  flex: 1;
 }
 
 .btn--primary:hover,
@@ -38,7 +37,7 @@
 .btn--bookmark {
   background: $color-secondary;
   color: $color-primary;
-  padding: 0.3;
+  padding: 0.8rem 0.9rem;
   text-align: center;
 }
 

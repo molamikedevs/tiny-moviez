@@ -30,9 +30,6 @@ class NavigationView {
 
       const type = btn.dataset.type;
 
-      // Keep guard clause for unbuilt features
-      if (type === 'recent') return;
-
       handler(type);
     });
   }

@@ -1,17 +1,21 @@
+import noPosterImg from 'url:../../../img/no-poster.png';
 import { state } from '../../model';
 
 export const createMovieCard = function (data) {
   const { poster_path, vote_average, release_date, id, media_type } = data;
   const IMG_URL = 'https://image.tmdb.org/t/p/w500';
   const title = data.title || data.name;
+  console.log(IMG_URL);
 
   // Check if this specific movie's ID exists in the bookmarks array
   const isBookmarked = state.bookmarks.some(b => b.id === id);
 
+  const imageSrc = poster_path ? `${IMG_URL}${poster_path}` : noPosterImg;
+
   return `
       <article class="movie-card" data-id="${id}" data-type="${media_type}">
         <img
-          src="${IMG_URL + poster_path}"
+          src="${imageSrc}"
           class="movie-card__poster"
           alt="${title}"
         />

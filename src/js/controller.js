@@ -1,10 +1,13 @@
 import * as model from './model';
+import actorsView from './views/actorsView.js';
 import detailsView from './views/detailsView.js';
 import gridView from './views/gridView';
 import heroView from './views/heroView';
 import navigationView from './views/navigationView';
 import paginationView from './views/paginationView';
 import searchView from './views/searchView';
+import theatersView from './views/theatersView.js';
+import upcomingView from './views/upcomingView.js';
 
 /**
  * Handles category switching (Movies, TV Shows, Anime)
@@ -14,6 +17,9 @@ const controlCategory = function (type) {
   // 1. Update state tracking
   model.state.ui.category = type;
   model.state.ui.page = 1;
+
+  // Update url to match category
+  window.location.hash = type;
 
   // Sync the Topbar and Sidebar visual states
   navigationView.setGlobalActive(type);
@@ -26,6 +32,7 @@ const controlCategory = function (type) {
     anime: 'Top Anime',
     topRated: 'Top Rated Content',
     bookmarks: 'Your Bookmarks',
+    recent: 'Recently Viewed',
   };
 
   // Update title (fallback to 'Movies' just in case)
@@ -35,6 +42,8 @@ const controlCategory = function (type) {
   let data;
   if (type === 'bookmarks') {
     data = model.state.bookmarks;
+  } else if (type === 'recent') {
+    data = model.state.recent;
   } else {
     data = model.state.library[type];
   }
@@ -65,12 +74,40 @@ const controlPagination = function (page) {
   paginationView.paginationRenderer(page, model.getTotalPages(data));
 };
 
+const controlRouting = function () {
+  // 1. Get the hash from the URL and remove the '#' symbol
+  const hash = window.location.hash.slice(1);
+
+  // 2. If there is no hash (e.g., first time loading the app), default to 'tv'
+  if (!hash) {
+    window.location.hash = 'tv';
+    return;
+  }
+
+  // 3. Define our valid navigation categories
+  const validCategories = [
+    'movie',
+    'tv',
+    'anime',
+    'trending',
+    'topRated',
+    'bookmarks',
+    'upcoming',
+    'recent',
+    'home',
+  ];
+
+  if (validCategories.includes(hash)) {
+    controlCategory(hash);
+  }
+};
+
 const controlSearch = async function () {
   try {
-    gridView.spinner();
+    gridView.renderSpinner();
 
     const query = searchView.getQuery();
-    if (!query) return; // Guard clause: Exit if search is empty
+    if (!query) return;
 
     await model.loadSearch(query);
 
@@ -82,6 +119,10 @@ const controlSearch = async function () {
     model.state.ui.activeData = data;
 
     const results = model.getSearchResult(data);
+
+    gridView.updateTitle(`Search Results for "${query}"`);
+
+    navigationView.setGlobalActive('none');
 
     gridView.render(results);
 
@@ -96,19 +137,37 @@ const controlSearch = async function () {
 
 // Application entry point for fetching data
 const controlDashboard = async function () {
-  gridView.spinner();
+  gridView.renderSpinner();
   await model.loadDashboard();
-
-  // Render TV shows as the initial default state
-  controlCategory('tv');
 
   //Initialize the hero with trending movies once
   heroView.setData(model.state.library.trending);
+
+  upcomingView.render(model.state.upcoming);
+  upcomingView.addHandlerPagination();
+
+  actorsView.render(model.state.actors);
+  actorsView.addHandlerPagination();
+
+  theatersView.render(model.state.theaters);
+  theatersView.addHandlerPagination();
 };
 
 const controlDetails = async function (type, id) {
   try {
+    // 1. Render.renderSpinner
+    detailsView.renderSpinner();
+
+    // 2. Fetch the data
     await model.loadDetails(type, id);
+
+    // 3. Add this item to the Recently Viewed history!
+    model.addRecent(model.state.details);
+
+    const movieTitle = model.state.details.title || model.state.details.name;
+    document.title = `${movieTitle} | TinyMoviez`;
+
+    // 4. Render the modal
     detailsView.detailsRenderer(model.state.details);
   } catch (err) {
     detailsView.renderError();
@@ -165,7 +224,28 @@ const init = async function () {
     controlDetails(type, id);
   });
 
-  detailsView.addHandlerClose();
+  detailsView.addHandlerClose(function () {
+    const currentCategory = model.state.ui.category;
+    const pageTitles = {
+      trending: 'Popular on TinyMoviez',
+      movie: 'Discover Movies',
+      tv: 'Trending TV Shows',
+      anime: 'Top Anime',
+      topRated: 'Top Rated Content',
+      bookmarks: 'Your Bookmarks',
+      recent: 'Recently Viewed',
+      search: 'Search Results',
+    };
+
+    document.title = `${pageTitles[currentCategory] || 'Movies'} | TinyMoviez`;
+  });
+
+  // 1. Listen for future URL changes
+  window.addEventListener('hashchange', controlRouting);
+
+  // 2. Manually run the router right now to load the first page!
+  // (This safely replaces both controlCategory('tv') AND the 'load' listener)
+  controlRouting();
 };
 
 init();

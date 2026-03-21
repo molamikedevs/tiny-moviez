@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'variable' as *;
 
 .movies__grid {
@@ -36,7 +37,7 @@
     }
 
     .movie-card__info {
-      background: lighten($color-secondary-light, 3%);
+      background: color.adjust($color-secondary, $lightness: -3%);
     }
   }
 }
@@ -118,14 +119,14 @@
       color: $color-secondary;
 
       &:hover {
-        background: lighten($color-tertiary, 10%);
+        background: color.adjust($color-secondary, $lightness: -2%);
       }
     }
 
     &--bookmark {
       background: rgba(255, 255, 255, 0.05);
       color: $color-primary;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: $bottom-border;
       padding: 0.6rem;
 
       &:hover {
@@ -138,7 +139,7 @@
         width: 1rem;
         height: 1rem;
         fill: currentColor;
-        margin: 0; // Remove any default margin
+        margin: 0;
       }
     }
   }

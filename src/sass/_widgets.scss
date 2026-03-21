@@ -1,38 +1,34 @@
+@use 'sass:color';
 @use 'variable' as *;
 
 .rightbar {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.8rem;
   padding: 2rem 1.5rem;
   background: $color-secondary-light;
   overflow-y: auto;
   height: 100vh;
-
-  /* Custom scrollbar for rightbar */
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $color-tertiary;
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  padding-bottom: 3rem;
 }
 
 .widget {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  flex-shrink: 0; /* Prevent widgets from shrinking */
+  flex-shrink: 0;
+  background: rgba($color-secondary, 0.3);
+  border-radius: 16px;
+  padding: 1rem;
+  transition: all 0.2s;
 
-  &:last-child {
-    margin-bottom: 1rem; /* Extra space at bottom for better scrolling */
+  &:hover {
+    background: rgba($color-secondary, 0.4);
   }
+}
+
+.widget:last-child {
+  margin-bottom: 4rem;
 }
 
 .widget__header {
@@ -49,29 +45,81 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
+}
 
-  a {
-    color: $color-tertiary;
-    text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    transition: all 0.2s;
+.widget__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 0.5rem;
+}
 
-    &:hover {
-      background: rgba($color-tertiary, 0.1);
-      text-decoration: none;
+.widget__pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba($color-secondary, 0.5);
+  padding: 0.3rem 0.8rem;
+  border-radius: 40px;
+}
+
+.widget__btn {
+  background: $color-secondary-light;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: #888;
+    transition: fill 0.2s;
+  }
+
+  &:hover:not(:disabled) {
+    background: $color-tertiary;
+    transform: scale(1.05);
+
+    svg {
+      fill: $color-secondary;
     }
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 }
 
-// Trending Now Widget
-.trending__list {
+.widget__page-info {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $color-tertiary;
+  min-width: 55px;
+  text-align: center;
+}
+
+.widget__total {
+  font-size: 0.65rem;
+  color: #666;
+  text-align: center;
+}
+
+// Upcoming Movies Widget
+.upcoming__list {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  max-height: 300px;
+  gap: 0.8rem;
+  max-height: 360px;
   overflow-y: auto;
   padding-right: 0.3rem;
 
@@ -85,68 +133,89 @@
   }
 }
 
-.trending__item {
-  background: $color-secondary;
-  padding: 0.7rem;
-  border-radius: 10px;
+.upcoming__item {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1rem;
+  padding: 0.8rem;
+  background: $color-secondary;
+  border-radius: 12px;
   transition: all 0.2s;
   border: 1px solid rgba(255, 255, 255, 0.02);
 
   &:hover {
     transform: translateX(5px);
-    background: lighten($color-secondary, 3%);
+    background: color.adjust($color-secondary, $lightness: -2%);
     border-color: rgba($color-tertiary, 0.2);
-  }
-
-  &-rank {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: $color-tertiary;
-    min-width: 28px;
-    text-align: center;
-  }
-
-  &-info {
-    flex: 1;
-    min-width: 0; /* Prevent text overflow */
-
-    h4 {
-      font-size: 0.85rem;
-      margin-bottom: 0.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    p {
-      font-size: 0.65rem;
-      color: #888;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-  }
-
-  .trending__badge {
-    background: $color-tertiary;
-    color: $color-secondary;
-    padding: 0.15rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    white-space: nowrap;
   }
 }
 
-// Recommendations Widget
-.recommendations__list {
+.upcoming__date {
+  min-width: 60px;
+  background: rgba($color-tertiary, 0.15);
+  color: $color-tertiary;
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.upcoming__info {
+  flex: 1;
+  min-width: 0;
+
+  h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  p {
+    font-size: 0.7rem;
+    color: #888;
+  }
+}
+
+.upcoming__reminder {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: #666;
+    transition: fill 0.2s;
+  }
+
+  &:hover {
+    background: rgba($color-tertiary, 0.2);
+
+    svg {
+      fill: $color-tertiary;
+    }
+  }
+}
+
+// In Theaters Widget
+.theaters__list {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-  max-height: 300px;
+  gap: 1rem;
+  max-height: 380px;
   overflow-y: auto;
   padding-right: 0.3rem;
 
@@ -160,167 +229,190 @@
   }
 }
 
-.recommendation__item {
-  background: $color-secondary;
-  padding: 0.8rem;
-  border-radius: 12px;
+.theaters__item {
   display: flex;
   gap: 0.8rem;
-  align-items: center;
+  padding: 0.8rem;
+  background: $color-secondary;
+  border-radius: 12px;
   transition: all 0.2s;
   border: 1px solid rgba(255, 255, 255, 0.02);
 
   &:hover {
-    background: lighten($color-secondary, 3%);
+    transform: translateX(5px);
+    background: color.adjust($color-secondary, $lightness: -2%);
     border-color: rgba($color-tertiary, 0.2);
-
-    .recommendation__play {
-      opacity: 1;
-      transform: scale(1);
-      background: $color-tertiary;
-    }
-  }
-
-  &-poster {
-    width: 45px;
-    height: 60px;
-    background: linear-gradient(
-      135deg,
-      $color-secondary-dark,
-      $color-secondary-light
-    );
-    border-radius: 6px;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-
-    &::after {
-      content: '🎬';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      opacity: 0.5;
-    }
-  }
-
-  &-info {
-    flex: 1;
-    min-width: 0; /* Prevent text overflow */
-
-    h4 {
-      font-size: 0.85rem;
-      margin-bottom: 0.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .match {
-      color: #4caf50;
-      font-size: 0.7rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-    }
-  }
-
-  .recommendation__play {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: rgba($color-tertiary, 0.8);
-    border: none;
-    color: $color-secondary;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0.7;
-    transform: scale(0.9);
-    transition: all 0.2s;
-    flex-shrink: 0;
-
-    svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
   }
 }
 
-// Genres Widget
-.genres__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  max-height: 200px;
-  overflow-y: auto;
-  padding-right: 0.3rem;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $color-tertiary;
-    border-radius: 3px;
-  }
+.theaters__poster {
+  width: 50px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
-.genre {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.6rem 0.8rem;
-  background: $color-secondary;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #aaa;
-  cursor: pointer;
-  font-size: 0.75rem;
-  transition: all 0.2s;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.theaters__info {
+  flex: 1;
+  min-width: 0;
 
-  &:hover {
-    border-color: $color-tertiary;
-    background: lighten($color-secondary, 5%);
-    color: $color-primary;
-    transform: translateY(-1px);
-  }
-
-  &.active {
-    background: $color-tertiary;
-    color: $color-secondary;
+  h4 {
+    font-size: 0.85rem;
     font-weight: 600;
-    border-color: $color-tertiary;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
-// Optional: Add a "Load More" button for widgets
-.widget__footer {
-  margin-top: 0.5rem;
-  text-align: center;
+.theaters__meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  color: #888;
+  margin-bottom: 0.5rem;
 
-  button {
-    background: none;
-    border: 1px solid rgba($color-tertiary, 0.3);
+  span:first-child {
+    color: #f5c518;
+  }
+}
+
+.theaters__showtimes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+
+  .showtime {
+    background: rgba($color-tertiary, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
     color: $color-tertiary;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
     cursor: pointer;
     transition: all 0.2s;
 
     &:hover {
       background: $color-tertiary;
       color: $color-secondary;
-      border-color: $color-tertiary;
     }
+  }
+}
+
+.theaters__ticket {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  background: rgba($color-tertiary, 0.1);
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: $color-tertiary;
+    transition: fill 0.2s;
+  }
+
+  &:hover {
+    background: $color-tertiary;
+
+    svg {
+      fill: $color-secondary;
+    }
+  }
+}
+
+// Popular Actors Widget
+.actors__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 3rem;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-tertiary;
+    border-radius: 3px;
+  }
+}
+
+.actor__item {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  background: $color-secondary;
+  border-radius: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateX(5px);
+    background: color.adjust($color-secondary, $lightness: -2%);
+    border-left: 2px solid $color-tertiary;
+  }
+}
+
+.actor__item:first-child {
+  margin-top: 5rem;
+}
+
+.actor__image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba($color-tertiary, 0.3);
+  flex-shrink: 0;
+}
+
+.actor__info {
+  flex: 1;
+  min-width: 0;
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    font-size: 0.7rem;
+    color: #888;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.actor__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(76, 175, 80, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  color: #4caf50;
+
+  .trend__icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    fill: #4caf50;
   }
 }

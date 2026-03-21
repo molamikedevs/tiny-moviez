@@ -23,6 +23,10 @@ export const state = {
 
   details: {},
   bookmarks: [],
+  upcoming: [],
+  theaters: [],
+  actors: [],
+  recent: [],
 
   ui: {
     category: 'tv', // Default category
@@ -43,41 +47,55 @@ export const state = {
  */
 export const loadDashboard = async function () {
   try {
-    // Promise.all allows us to fetch all 5 endpoints simultaneously
-    // rather than waiting for one to finish before starting the next.
-    const [trending, popularMovies, topRated, tvSeries, animation] =
-      await Promise.all([
-        AJAX(`${TMDB_BASE_URL}/trending/all/week`, TMDB_API_KEY),
-        AJAX(`${TMDB_BASE_URL}/movie/popular`, TMDB_API_KEY),
-        AJAX(`${TMDB_BASE_URL}/movie/top_rated`, TMDB_API_KEY),
-        AJAX(`${TMDB_BASE_URL}/tv/popular`, TMDB_API_KEY),
-        AJAX(
-          `${TMDB_BASE_URL}/discover/movie?with_genres=${GENRE_ANIMATION_ID}`,
-          TMDB_API_KEY,
-        ),
-      ]);
+    // Helper function to catch individual errors and return an empty array
+    const safeFetch = url =>
+      AJAX(url, TMDB_API_KEY).catch(err => {
+        console.warn(`Non-fatal error fetching ${url}:`, err);
+        return { results: [] }; // Returns empty data so the app doesn't crash
+      });
 
-    // Data Normalization: We manually inject `media_type` into the objects
-    // so our Views never have to guess what type of content they are rendering.
+    const [
+      trending,
+      popularMovies,
+      topRated,
+      tvSeries,
+      animation,
+      upcoming,
+      theaters,
+      actors,
+    ] = await Promise.all([
+      safeFetch(`${TMDB_BASE_URL}/trending/all/week`),
+      safeFetch(`${TMDB_BASE_URL}/movie/popular`),
+      safeFetch(`${TMDB_BASE_URL}/movie/top_rated`),
+      safeFetch(`${TMDB_BASE_URL}/tv/popular`),
+      safeFetch(
+        `${TMDB_BASE_URL}/discover/movie?with_genres=${GENRE_ANIMATION_ID}`,
+      ),
+      safeFetch(`${TMDB_BASE_URL}/movie/upcoming`),
+      safeFetch(`${TMDB_BASE_URL}/movie/now_playing`),
+      safeFetch(`${TMDB_BASE_URL}/person/popular`),
+    ]);
+
+    // Data Normalization
     state.library.movie = popularMovies.results.map(m => ({
       ...m,
       media_type: 'movie',
     }));
-    state.library.tv = tvSeries.results.map(m => ({
-      ...m,
-      media_type: 'tv',
-    }));
+    state.library.tv = tvSeries.results.map(m => ({ ...m, media_type: 'tv' }));
     state.library.anime = animation.results.map(m => ({
       ...m,
       media_type: 'movie',
     }));
-
-    // Fixed: Ensure these are saved inside state.library
     state.library.topRated = topRated.results.map(m => ({
       ...m,
       media_type: 'movie',
     }));
-    state.library.trending = trending.results; // Trending natively includes media_type
+    state.library.trending = trending.results;
+
+    // Sidebar Data
+    state.upcoming = upcoming.results;
+    state.theaters = theaters.results;
+    state.actors = actors.results;
   } catch (err) {
     console.error(`💥 Error loading dashboard: ${err}`);
   }
@@ -125,7 +143,7 @@ export const loadDetails = async function (type, id) {
   }
 };
 
-export const persistBookmarks = function () {
+const persistBookmarks = function () {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
 
@@ -155,3 +173,34 @@ const initBookmarks = function () {
   if (storage) state.bookmarks = JSON.parse(storage);
 };
 initBookmarks();
+
+// Save to storage
+const persistRecent = function () {
+  localStorage.setItem('recent', JSON.stringify(state.recent));
+};
+
+// Add a viewed item to the history
+export const addRecent = function (item) {
+  // 1. Check if the movie is ALREADY in the recent list
+  const existingIndex = state.recent.findIndex(el => el.id === item.id);
+
+  // 2. If it is, remove it from its old spot
+  if (existingIndex > -1) {
+    state.recent.splice(existingIndex, 1);
+  }
+  // 3. Add it to the VERY FRONT of the array (so newest is first!)
+  state.recent.unshift(item);
+
+  if (state.recent.length > 20) {
+    state.recent.pop(); // Removes the oldest item at the end
+  }
+
+  persistRecent();
+};
+
+const initRecent = function () {
+  const storage = localStorage.getItem('recent');
+  if (storage) state.recent = JSON.parse(storage);
+};
+
+initRecent();

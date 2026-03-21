@@ -10,9 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
-    <!--
-      <link rel="shortcut icon" href="src/img/favicon.png" type="image/x-icon" />
-    -->
+
+    <link rel="shortcut icon" href="src/img/favicon.png" type="image/x-icon" />
 
     <link rel="stylesheet" href="src/sass/main.scss" />
     <script type="module" defer src="src/js/controller.js"></script>
@@ -76,11 +75,11 @@
               Recent
             </li>
 
-            <li class="menu__item" data-type="topRated">
+            <li class="menu__item" data-type="bookmarks">
               <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-star-empty"></use>
+                <use href="src/img/icons.svg#icon-bookmarks"></use>
               </svg>
-              Top Rated
+              Bookmarks
             </li>
 
             <li class="menu__item" data-type="trending">
@@ -90,11 +89,11 @@
               Trending
             </li>
 
-            <li class="menu__item" data-type="bookmarks">
+            <li class="menu__item" data-type="topRated">
               <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-bookmarks"></use>
+                <use href="src/img/icons.svg#icon-star-empty"></use>
               </svg>
-              Bookmarks
+              Top Rated
             </li>
           </ul>
         </div>
@@ -106,14 +105,14 @@
         <header class="topbar">
           <nav class="topbar__nav">
             <button class="nav__link" data-type="movie">Movies</button>
-            <button class="nav__link active" data-type="tv">TV Shows</button>
+            <button class="nav__link" data-type="tv">TV Shows</button>
             <button class="nav__link" data-type="anime">Anime</button>
           </nav>
 
           <form class="topbar__search">
             <input type="text" placeholder="Search" class="search__input" />
 
-            <button class="search__btn">
+            <button type="submit" class="search__btn">
               <svg class="search__icon">
                 <use href="src/img/icons.svg#icon-search"></use>
               </svg>
@@ -252,74 +251,323 @@
 
       <!-- RIGHT SIDEBAR -->
       <aside class="rightbar">
-        <!-- TRENDING NOW -->
-        <section class="widget">
+        <!-- UPCOMING MOVIES -->
+        <section class="widget" data-widget="upcoming">
           <div class="widget__header">
-            <h3>Trending Now 🔥</h3>
-            <a href="#">View All</a>
+            <h3>Coming Soon 🎬</h3>
           </div>
 
-          <div class="trending__list">
-            <div class="trending__item">
-              <span class="trending__item-rank">1</span>
-              <div class="trending__item-info">
-                <h4>Dune: Part Two</h4>
-                <p>⭐ 8.7 <span class="trending__badge">+2</span></p>
+          <div class="upcoming__list" data-widget-list="upcoming">
+            <!--
+            <div class="upcoming__item">
+              <div class="upcoming__date">MAR 28</div>
+              <div class="upcoming__info">
+                <h4>Godzilla x Kong: The New Empire</h4>
+                <p>Action • Sci-Fi</p>
               </div>
-            </div>
-            <!-- More trending items... -->
-          </div>
-        </section>
-
-        <!-- RECOMMENDED FOR YOU -->
-        <section class="widget">
-          <div class="widget__header">
-            <h3>Recommended 🎯</h3>
-            <a href="#">More</a>
-          </div>
-
-          <div class="recommendations__list">
-            <div class="recommendation__item">
-              <div class="recommendation__item-poster"></div>
-              <div class="recommendation__item-info">
-                <h4>The Last of Us</h4>
-                <span class="match">98% Match</span>
-              </div>
-              <button class="recommendation__play" title="Play">
+              <button class="upcoming__reminder" title="Remind me">
                 <svg>
-                  <use href="src/img/icons.svg#icon-play"></use>
+                  <use href="src/img/icons.svg#icon-bell"></use>
                 </svg>
               </button>
             </div>
-            <!-- More recommendations... -->
-          </div>
-        </section>
 
-        <!-- GENRES -->
-        <section class="widget">
-          <div class="widget__header">
-            <h3>Popular Genres</h3>
-          </div>
+            <div class="upcoming__item">
+              <div class="upcoming__date">APR 5</div>
+              <div class="upcoming__info">
+                <h4>Joker: Folie à Deux</h4>
+                <p>Drama • Thriller</p>
+              </div>
+              <button class="upcoming__reminder" title="Remind me">
+                <svg>
+                  <use href="src/img/icons.svg#icon-bell"></use>
+                </svg>
+              </button>
+            </div>
 
-          <div class="genres__grid">
-            <button class="genre active">Action</button>
-            <button class="genre">Adventure</button>
-            <button class="genre">Animation</button>
-            <button class="genre">Comedy</button>
-            <button class="genre">Crime</button>
-            <button class="genre">Documentary</button>
-            <button class="genre">Drama</button>
-            <button class="genre">Family</button>
-            <button class="genre">Fantasy</button>
-            <button class="genre">Horror</button>
-            <button class="genre">Mystery</button>
-            <button class="genre">Romance</button>
-            <button class="genre">Sci-Fi</button>
-            <button class="genre">Thriller</button>
+            <div class="upcoming__item">
+              <div class="upcoming__date">APR 12</div>
+              <div class="upcoming__info">
+                <h4>Civil War</h4>
+                <p>Action • Drama</p>
+              </div>
+              <button class="upcoming__reminder" title="Remind me">
+                <svg>
+                  <use href="src/img/icons.svg#icon-bell"></use>
+                </svg>
+              </button>
+            </div>
+
+            <div class="upcoming__item">
+              <div class="upcoming__date">MAY 3</div>
+              <div class="upcoming__info">
+                <h4>Deadpool 3</h4>
+                <p>Action • Comedy</p>
+              </div>
+              <button class="upcoming__reminder" title="Remind me">
+                <svg>
+                  <use href="src/img/icons.svg#icon-bell"></use>
+                </svg>
+              </button>
+            </div>
+
+            <div class="upcoming__item">
+              <div class="upcoming__date">MAY 24</div>
+              <div class="upcoming__info">
+                <h4>Furiosa: A Mad Max Saga</h4>
+                <p>Action • Adventure</p>
+              </div>
+              <button class="upcoming__reminder" title="Remind me">
+                <svg>
+                  <use href="src/img/icons.svg#icon-bell"></use>
+                </svg>
+              </button>
+            </div>
+            -->
           </div>
 
           <div class="widget__footer">
-            <button>Load More Genres</button>
+            <div class="widget__pagination">
+              <button
+                class="widget__btn widget__btn--prev"
+                data-widget="upcoming"
+                data-direction="prev"
+              >
+                <svg>
+                  <use href="src/img/icons.svg#icon-arrow-left2"></use>
+                </svg>
+              </button>
+              <span class="widget__page-info">Page 1</span>
+              <button
+                class="widget__btn widget__btn--next"
+                data-widget="upcoming"
+                data-direction="next"
+              >
+                <svg>
+                  <use href="src/img/icons.svg#icon-arrow-right2"></use>
+                </svg>
+              </button>
+            </div>
+            <span class="widget__total">Showing 1-4 of 12 upcoming movies</span>
+          </div>
+        </section>
+
+        <!-- IN THEATERS -->
+        <section class="widget" data-widget="theaters">
+          <div class="widget__header">
+            <h3>In Theaters 🎭</h3>
+          </div>
+
+          <div class="theaters__list" data-widget-list="theaters">
+            <!--
+            <div class="theaters__item">
+              <img
+                src="https://image.tmdb.org/t/p/w92/8UlWHLMpgZm9bx6QYh0OoqE3vpv.jpg"
+                alt="Dune: Part Two"
+                class="theaters__poster"
+              />
+              <div class="theaters__info">
+                <h4>Dune: Part Two</h4>
+                <div class="theaters__meta">
+                  <span>⭐ 8.9</span>
+                  <span>2h 46m</span>
+                </div>
+                <div class="theaters__showtimes">
+                  <span class="showtime">11:30 AM</span>
+                  <span class="showtime">2:45 PM</span>
+                  <span class="showtime">6:15 PM</span>
+                </div>
+              </div>
+              <button class="theaters__ticket" title="Get Tickets">
+                <svg>
+                  <use href="src/img/icons.svg#icon-ticket"></use>
+                </svg>
+              </button>
+            </div>
+
+            <div class="theaters__item">
+              <img
+                src="https://image.tmdb.org/t/p/w92/pFjHMVqI7Uy0QdZTo7s7XkFJm6D.jpg"
+                alt="Kung Fu Panda 4"
+                class="theaters__poster"
+              />
+              <div class="theaters__info">
+                <h4>Kung Fu Panda 4</h4>
+                <div class="theaters__meta">
+                  <span>⭐ 7.8</span>
+                  <span>1h 34m</span>
+                </div>
+                <div class="theaters__showtimes">
+                  <span class="showtime">10:00 AM</span>
+                  <span class="showtime">1:20 PM</span>
+                  <span class="showtime">4:40 PM</span>
+                  <span class="showtime">7:55 PM</span>
+                </div>
+              </div>
+              <button class="theaters__ticket" title="Get Tickets">
+                <svg>
+                  <use href="src/img/icons.svg#icon-ticket"></use>
+                </svg>
+              </button>
+            </div>
+
+            <div class="theaters__item">
+              <img
+                src="https://image.tmdb.org/t/p/w92/4m1Au3YkjqsxF8iwQy0fVYSrtE5.jpg"
+                alt="Ghostbusters: Frozen Empire"
+                class="theaters__poster"
+              />
+              <div class="theaters__info">
+                <h4>Ghostbusters: Frozen Empire</h4>
+                <div class="theaters__meta">
+                  <span>⭐ 7.2</span>
+                  <span>1h 55m</span>
+                </div>
+                <div class="theaters__showtimes">
+                  <span class="showtime">12:15 PM</span>
+                  <span class="showtime">3:30 PM</span>
+                  <span class="showtime">7:00 PM</span>
+                </div>
+              </div>
+              <button class="theaters__ticket" title="Get Tickets">
+                <svg>
+                  <use href="src/img/icons.svg#icon-ticket"></use>
+                </svg>
+              </button>
+            </div>
+            -->
+          </div>
+
+          <div class="widget__footer">
+            <div class="widget__pagination">
+              <button
+                class="widget__btn widget__btn--prev"
+                data-widget="theaters"
+                data-direction="prev"
+              >
+                <svg>
+                  <use href="src/img/icons.svg#icon-arrow-left2"></use>
+                </svg>
+              </button>
+              <span class="widget__page-info">Page 1</span>
+              <button
+                class="widget__btn widget__btn--next"
+                data-widget="theaters"
+                data-direction="next"
+              >
+                <svg>
+                  <use href="src/img/icons.svg#icon-arrow-right2"></use>
+                </svg>
+              </button>
+            </div>
+            <span class="widget__total">Showing 1-3 of 8 in theaters</span>
+          </div>
+        </section>
+
+        <!-- POPULAR ACTORS -->
+        <section class="widget" data-widget="actors">
+          <div class="widget__header">
+            <h3>Popular Actors ⭐</h3>
+          </div>
+
+          <div class="actors__list" data-widget-list="actors">
+            <!--
+            <div class="actor__item">
+              <img
+                src="https://image.tmdb.org/t/p/w185/8qBylBsQfC3nXQcVxPkzNwZv9Y.jpg"
+                alt="Cillian Murphy"
+                class="actor__image"
+              />
+              <div class="actor__info">
+                <h4>Cillian Murphy</h4>
+                <p>Oppenheimer • Peaky Blinders</p>
+                <div class="actor__trend">
+                  <svg class="trend__icon">
+                    <use href="src/img/icons.svg#icon-trending-up"></use>
+                  </svg>
+                  <span>+245% this week</span>
+                </div>
+              </div>
+            </div>
+            <div class="actor__item">
+              <img
+                src="https://image.tmdb.org/t/p/w185/3iFm6Kz7iYo6EcOOAxqLtBtjxqk.jpg"
+                alt="Margot Robbie"
+                class="actor__image"
+              />
+              <div class="actor__info">
+                <h4>Margot Robbie</h4>
+                <p>Barbie • Wolf of Wall Street</p>
+                <div class="actor__trend">
+                  <svg class="trend__icon">
+                    <use href="src/img/icons.svg#icon-trending-up"></use>
+                  </svg>
+                  <span>+189% this week</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="actor__item">
+              <img
+                src="https://image.tmdb.org/t/p/w185/4PiiqX6yRsuTg2Fd1jWrUYcM5lK.jpg"
+                alt="Timothée Chalamet"
+                class="actor__image"
+              />
+              <div class="actor__info">
+                <h4>Timothée Chalamet</h4>
+                <p>Dune • Wonka</p>
+                <div class="actor__trend">
+                  <svg class="trend__icon">
+                    <use href="src/img/icons.svg#icon-trending-up"></use>
+                  </svg>
+                  <span>+312% this week</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="actor__item">
+              <img
+                src="https://image.tmdb.org/t/p/w185/6ZbHqaWv9KzT1E7kMqGmZQrRcWp.jpg"
+                alt="Zendaya"
+                class="actor__image"
+              />
+              <div class="actor__info">
+                <h4>Zendaya</h4>
+                <p>Dune • Euphoria</p>
+                <div class="actor__trend">
+                  <svg class="trend__icon">
+                    <use href="src/img/icons.svg#icon-trending-up"></use>
+                  </svg>
+                  <span>+267% this week</span>
+                </div>
+              </div>
+            </div>
+            -->
+          </div>
+
+          <div class="widget__footer">
+            <div class="widget__pagination">
+              <button
+                class="widget__btn widget__btn--prev"
+                data-widget="actors"
+                data-direction="prev"
+              >
+                <svg>
+                  <use href="src/img/icons.svg#icon-arrow-left2"></use>
+                </svg>
+              </button>
+              <span class="widget__page-info">Page 1</span>
+              <button
+                class="widget__btn widget__btn--next"
+                data-widget="actors"
+                data-direction="next"
+              >
+                <svg>
+                  <use href="src/img/icons.svg#icon-arrow-right2"></use>
+                </svg>
+              </button>
+            </div>
+            <span class="widget__total">Showing 1-4 of 24 popular actors</span>
           </div>
         </section>
       </aside>

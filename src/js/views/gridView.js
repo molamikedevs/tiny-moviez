@@ -25,6 +25,8 @@ class GridView extends View {
     if (this._titleElement) {
       this._titleElement.textContent = title;
     }
+
+    document.title = `${title} | TinyMoviez`;
   }
 }
 
