@@ -15,5 +15,13 @@
     "@parcel/transformer-sass": "^2.16.4",
     "parcel": "^2.16.4",
     "sass": "^1.98.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "lmdb",
+      "msgpackr-extract"
+    ]
   }
 }
