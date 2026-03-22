@@ -2,7 +2,7 @@
 
 > A high-performance, state-driven movie & TV show dashboard built entirely with Vanilla JavaScript and Custom MVC Architecture.
 
-![Movie App Banner]([https://raw.githubusercontent.com/molamikedevs/tiny-moviez/main/src/img/hero.jpg](https://i.imgur.com/FFZoDKx.png)) ## ✨ Overview
+![Movie App Banner](https://i.imgur.com/FFZoDKx.png) ## ✨ Overview
 
 TinyMoviez is a capstone project designed to demonstrate advanced JavaScript concepts without relying on modern frameworks like React. By building a custom Model-View-Controller (MVC) architecture from scratch, this application showcases deep foundational knowledge of state management, the Publisher-Subscriber pattern, asynchronous API handling, and scalable SCSS styling.
 
@@ -16,7 +16,7 @@ Explore the live application here: **[TinyMoviez on Vercel](https://tiny-moviez-
 - **Advanced Data Fetching:** Utilizes `Promise.all` for parallel fetching of multiple TMDb endpoints, drastically reducing load times.
 - **Media Discovery:** Browse trending movies, TV shows, and Anime with client-side pagination.
 - **Search Functionality:** Real-time multi-search for finding specific titles.
-- **Data Persistence:** "Bookmarks" (Watchlist) and "Recently Viewed" history are automatically saved and hydrated using `LocalStorage`.
+- **Data Persistence:** "Bookmarks" and "Recently Viewed" history are automatically saved and hydrated using `LocalStorage`.
 - **Responsive UI:** Fluid CSS Grid layout combined with BEM methodology in SCSS for a flawless experience across Desktop, Tablet, and Mobile.
 
 ## 🛠 Tech Stack
@@ -40,8 +40,8 @@ This app avoids messy DOM manipulation by strictly separating concerns:
 ## 📸 App Preview
 
 <div align="center">
-  <img src="[https://via.placeholder.com/300x200?text=Desktop+View](https://i.imgur.com/muhJfLj.png)" width="45%" alt="Desktop View">
-  <img src="https://via.placeholder.com/300x200?text=Mobile+View" width="45%" alt="Mobile View"> 
+  <img src="https://i.imgur.com/muhJfLj.png" width="45%" alt="Mobile View"> 
+  <img src="https://i.imgur.com/FFZoDKx.png" width="45%" alt="Desktop View">
 </div>
 
 ## 💻 Installation & Local Setup
