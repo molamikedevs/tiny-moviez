@@ -37,7 +37,7 @@ export default class View {
       if (errorElement) {
         errorElement.remove();
       }
-    }, 5000);
+    }, 6000);
   }
 
   renderSpinner() {

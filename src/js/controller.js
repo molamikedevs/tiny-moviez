@@ -49,6 +49,17 @@ const controlCategory = function (type) {
   }
   model.state.ui.activeData = data;
 
+  if (!data || data.length === 0) {
+    const messages = {
+      bookmarks: 'You have no bookmarks yet.',
+      recent: 'You have not watched anything yet.',
+    };
+
+    gridView.renderError(messages[type]);
+    paginationView.clear?.();
+    return;
+  }
+
   // 3. Get only the 10 results needed for page 1
   const results = model.getSearchResult(data);
 
@@ -94,7 +105,6 @@ const controlRouting = function () {
     'bookmarks',
     'upcoming',
     'recent',
-    'home',
   ];
 
   if (validCategories.includes(hash)) {

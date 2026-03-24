@@ -123,6 +123,13 @@
       }
     }
 
+    &--details {
+      &:hover {
+        color: $color-primary;
+        border: 1px solid $color-tertiary;
+      }
+    }
+
     &--bookmark {
       background: rgba(255, 255, 255, 0.05);
       color: $color-primary;
