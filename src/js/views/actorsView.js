@@ -7,7 +7,7 @@ class ActorsView extends WidgetView {
   _widgetContainer = document.querySelector('[data-widget="actors"]');
   _errorMessage = 'Failed to load actors';
 
-  _itemsPerPage = 4;
+  _itemsPerPage = 3;
   _itemLabel = 'Popular Actors';
 
   // 2. Tell the parent which HTML template to use

@@ -7,7 +7,7 @@ class TheatersView extends WidgetView {
   _widgetContainer = document.querySelector('[data-widget="theaters"]');
   _errorMessage = 'Failed to load theaters movies';
 
-  _itemsPerPage = 4;
+  _itemsPerPage = 2;
   _itemLabel = 'in theaters';
 
   // 2. Tell the parent which HTML template to use

@@ -14,6 +14,13 @@ import upcomingView from './views/upcomingView.js';
  * @param {string} type - The dataset type from the clicked navigation button
  */
 const controlCategory = function (type) {
+  if (type === 'more') {
+    navigationView.toggleMobileMenu();
+    return;
+  }
+
+  navigationView.closeMobileMenu();
+
   // 1. Update state tracking
   model.state.ui.category = type;
   model.state.ui.page = 1;

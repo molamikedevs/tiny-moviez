@@ -1,6 +1,10 @@
+import icons from 'url:../../img/icons.svg';
+
 class NavigationView {
   _topbarNav = document.querySelector('.topbar__nav');
   _sidebarNav = document.querySelector('.sidebar');
+  _moreBtnSpan = document.querySelector('#btn-mobile-more span');
+  _moreBtnIcon = document.querySelector('#btn-mobile-more .menu__icon use');
 
   //Syncs active state across the entire app
   setGlobalActive(type) {
@@ -11,6 +15,38 @@ class NavigationView {
     // 2. Add active class to ANY link that matches the current type
     const matchingLinks = document.querySelectorAll(`[data-type="${type}"]`);
     matchingLinks.forEach(link => link.classList.add('active'));
+  }
+
+  toggleMobileMenu() {
+    this._sidebarNav.classList.toggle('expanded');
+
+    const isExpanded = this._sidebarNav.classList.contains('expanded');
+
+    // Swap the Text
+    if (this._moreBtnSpan) {
+      this._moreBtnSpan.textContent = isExpanded ? 'Close' : 'More';
+    }
+
+    // Swap the Icon using your imported 'icons' path!
+    if (this._moreBtnIcon) {
+      const iconName = isExpanded ? 'cancel-circle' : 'read-more';
+      // Inject the imported variable right before the hash
+      this._moreBtnIcon.setAttribute('href', `${icons}#icon-${iconName}`);
+    }
+  }
+
+  closeMobileMenu() {
+    this._sidebarNav.classList.remove('expanded');
+
+    // Reset Text
+    if (this._moreBtnSpan) {
+      this._moreBtnSpan.textContent = 'More';
+    }
+
+    // Reset Icon using your imported 'icons' path!
+    if (this._moreBtnIcon) {
+      this._moreBtnIcon.setAttribute('href', `${icons}#icon-read-more`);
+    }
   }
 
   addHandleCategory(handler) {

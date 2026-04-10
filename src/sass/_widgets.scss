@@ -334,11 +334,11 @@
 .actors__list {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 1rem;
-  max-height: 380px;
-  overflow-y: auto;
-  padding-right: 3rem;
+  max-height: 300px;
+  height: 280px;
+  overflow-y: hidden;
+  padding-right: 0.5rem;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -353,6 +353,7 @@
 .actor__item {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   padding: 0.8rem;
   background: $color-secondary;
@@ -365,10 +366,6 @@
     background: color.adjust($color-secondary, $lightness: -2%);
     border-left: 2px solid $color-tertiary;
   }
-}
-
-.actor__item:first-child {
-  margin-top: 5rem;
 }
 
 .actor__image {
@@ -385,9 +382,9 @@
   min-width: 0;
 
   h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   p {
