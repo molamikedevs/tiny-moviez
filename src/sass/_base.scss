@@ -12,10 +12,12 @@
   box-sizing: inherit;
 }
 
+html,
 body {
   font-family: $font-secondary;
   background: $color-secondary-light;
   color: $color-primary;
+  // min-height: 100dvh;
 }
 
 // Spinner Styles
