@@ -10,11 +10,11 @@ const timeout = function (s) {
 
 export const AJAX = async function (url, api) {
   try {
-    const fetchRequest = await fetch(url, {
+    const fetchRequest = fetch(url, {
       headers: {
         Authorization: `Bearer ${api}`,
         'Content-Type': 'application/json',
-      },
+      }, // no await: start the request, don't wait
     });
 
     const res = await Promise.race([fetchRequest, timeout(TIMEOUT_SEC)]);

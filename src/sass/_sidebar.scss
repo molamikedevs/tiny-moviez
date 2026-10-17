@@ -14,7 +14,7 @@
     display: none !important;
   }
 
-  &__logo {
+  __logo {
     font-family: $font-primary;
     font-weight: 800;
     letter-spacing: 2px;
@@ -33,8 +33,8 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #888;
-    font-weight: 600;
+    color: $color-text-muted;
+    font-weight: 700;
   }
 
   &__menu {
@@ -52,7 +52,7 @@
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #aaa;
+    color: $color-text-muted;
 
     &:hover {
       background: rgba($color-tertiary, 0.1);
@@ -63,6 +63,18 @@
       background: rgba($color-tertiary, 0.15);
       color: $color-tertiary;
       font-weight: 600;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 10%;
+        height: 80%;
+        width: 4px;
+        background: $color-tertiary;
+        border-radius: 0 4px 4px 0;
+      }
     }
 
     .menu__icon {
