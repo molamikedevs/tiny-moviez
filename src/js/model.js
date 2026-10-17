@@ -14,9 +14,9 @@ import { AJAX } from './helpers';
  */
 export const state = {
   library: {
-    movie: [], // Renamed to match HTML data-type="movie"
-    tv: [], // Renamed to match HTML data-type="tv"
-    anime: [], // Renamed to match HTML data-type="anime"
+    movie: [], // Match HTML data-type="movie"
+    tv: [], // Match HTML data-type="tv"
+    anime: [], // Match HTML data-type="anime"
     topRated: [],
     trending: [],
   },

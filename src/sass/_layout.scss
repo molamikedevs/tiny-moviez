@@ -18,7 +18,6 @@
   /* MOBILE BREAKPOINT */
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-
     height: auto;
     min-height: 100dvh;
     overflow: visible;
@@ -35,7 +34,6 @@
   overflow-y: auto;
   height: 100vh;
 
-  // Fix bottom alignment
   &::after {
     content: '';
     margin-top: auto;
@@ -99,11 +97,13 @@
   padding: 1.5rem;
   background: $color-secondary;
   height: 100%;
+
   overflow-y: auto;
 
   @media (max-width: 768px) {
     padding: 1rem;
     height: auto;
+    min-height: 100%;
     overflow-y: visible;
   }
 }
