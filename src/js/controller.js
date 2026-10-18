@@ -9,6 +9,17 @@ import searchView from './views/searchView';
 import theatersView from './views/theatersView.js';
 import upcomingView from './views/upcomingView.js';
 
+// Grid heading for each category (also used for the tab title)
+const PAGE_TITLES = {
+  trending: 'Popular on TinyMoviez',
+  movie: 'Discover Movies',
+  tv: 'Trending TV Shows',
+  anime: 'Top Anime',
+  topRated: 'Top Rated Content',
+  bookmarks: 'Your Bookmarks',
+  recent: 'Recently Viewed',
+};
+
 /**
  * Picks the hero slides for a category: the category's own list when it has
  * one (so Anime shows anime), otherwise trending.
@@ -56,19 +67,8 @@ const controlCategory = function (type) {
   heroView.setData(getHeroData(type));
   heroView.show();
 
-  // Map data types to dynamic titles and update the UI
-  const pageTitles = {
-    trending: 'Popular on TinyMoviez',
-    movie: 'Discover Movies',
-    tv: 'Trending TV Shows',
-    anime: 'Top Anime',
-    topRated: 'Top Rated Content',
-    bookmarks: 'Your Bookmarks',
-    recent: 'Recently Viewed',
-  };
-
   // Update title (fallback to 'Movies' just in case)
-  gridView.updateTitle(pageTitles[type] || 'Movies');
+  gridView.updateTitle(PAGE_TITLES[type] || 'Movies');
 
   // 2. Retrieve cached data for this category
   const data = getCategoryData(type);
@@ -180,7 +180,13 @@ const controlSearch = async function () {
 // Application entry point for fetching data
 const controlDashboard = async function () {
   gridView.renderSpinner();
-  await model.loadDashboard();
+
+  try {
+    await model.loadDashboard();
+  } catch (err) {
+    gridView.renderError('Could not load TinyMoviez. Please refresh.');
+    return;
+  }
 
   //Initialize the hero with trending movies once
   heroView.setData(model.state.library.trending);
@@ -213,7 +219,6 @@ const controlDetails = async function (type, id) {
     detailsView.detailsRenderer(model.state.details);
   } catch (err) {
     detailsView.renderError();
-    console.error(`💥💥 ${err}`);
   }
 };
 
@@ -294,20 +299,9 @@ const init = async function () {
     controlDetails(type, id);
   });
 
+  // Closing details puts the tab title back to the page underneath
   detailsView.addHandlerClose(function () {
-    const currentCategory = model.state.ui.category;
-    const pageTitles = {
-      trending: 'Popular on TinyMoviez',
-      movie: 'Discover Movies',
-      tv: 'Trending TV Shows',
-      anime: 'Top Anime',
-      topRated: 'Top Rated Content',
-      bookmarks: 'Your Bookmarks',
-      recent: 'Recently Viewed',
-      search: 'Search Results',
-    };
-
-    document.title = `${pageTitles[currentCategory] || 'Movies'} | TinyMoviez`;
+    gridView.restoreDocumentTitle();
   });
 
   // 1. Listen for future URL changes

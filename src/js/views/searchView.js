@@ -5,7 +5,8 @@ class SearchView extends View {
   _input = document.querySelector('.search__input');
 
   getQuery() {
-    const query = this._input.value.trim();
+    // Trim the ends and collapse inner runs: "  spider    man " -> "spider man"
+    const query = this._input.value.trim().replace(/\s+/g, ' ');
     this._clearInput();
     return query;
   }

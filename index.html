@@ -7,6 +7,10 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#16181e" />
+    <meta
+      name="description"
+      content="TinyMoviez: browse trending movies, TV shows and anime, see what's coming soon and in theaters, and bookmark titles to watch later."
+    />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +19,8 @@
       rel="stylesheet"
     />
 
-    <link rel="shortcut icon" href="src/img/favicon.png" type="image/x-icon" />
+    <link rel="icon" type="image/png" href="src/img/favicon.png" />
+    <link rel="apple-touch-icon" href="src/img/favicon.png" />
 
     <link rel="stylesheet" href="src/sass/main.scss" />
     <script type="module" defer src="src/js/controller.js"></script>
@@ -26,7 +31,7 @@
   <body class="app">
     <div class="dashboard">
       <!-- SIDEBAR -->
-      <aside class="sidebar">
+      <aside class="sidebar" aria-label="Main menu">
         <div class="sidebar__logo">
           <h2 class="logo">TINY<br />MOVIEZ</h2>
         </div>
@@ -34,23 +39,33 @@
         <div class="sidebar__section">
           <p class="sidebar__title">Menu</p>
           <ul class="sidebar__menu">
-            <li class="menu__item" data-type="movie">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-film"></use>
-              </svg>
-              <span>Movies</span>
+            <li>
+              <button type="button" class="menu__item" data-type="movie">
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-film"></use>
+                </svg>
+                <span>Movies</span>
+              </button>
             </li>
-            <li class="menu__item" data-type="tv">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-display"></use>
-              </svg>
-              <span>TV Shows</span>
+            <li>
+              <button type="button" class="menu__item" data-type="tv">
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-display"></use>
+                </svg>
+                <span>TV Shows</span>
+              </button>
             </li>
-            <li class="menu__item mobile-hide" data-type="anime">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-dice"></use>
-              </svg>
-              <span>Anime</span>
+            <li>
+              <button
+                type="button"
+                class="menu__item mobile-hide"
+                data-type="anime"
+              >
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-dice"></use>
+                </svg>
+                <span>Anime</span>
+              </button>
             </li>
           </ul>
         </div>
@@ -58,40 +73,64 @@
         <div class="sidebar__section">
           <p class="sidebar__title">Library</p>
           <ul class="sidebar__menu">
-            <li class="menu__item mobile-hide" data-type="recent">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-clock"></use>
-              </svg>
-              <span>Recent</span>
+            <li>
+              <button
+                type="button"
+                class="menu__item mobile-hide"
+                data-type="recent"
+              >
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-clock"></use>
+                </svg>
+                <span>Recent</span>
+              </button>
             </li>
-            <li class="menu__item" data-type="bookmarks">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-bookmarks"></use>
-              </svg>
-              <span>Bookmarks</span>
+            <li>
+              <button type="button" class="menu__item" data-type="bookmarks">
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-bookmarks"></use>
+                </svg>
+                <span>Bookmarks</span>
+              </button>
             </li>
-            <li class="menu__item mobile-hide" data-type="trending">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-trending-up"></use>
-              </svg>
-              <span>Trending</span>
+            <li>
+              <button
+                type="button"
+                class="menu__item mobile-hide"
+                data-type="trending"
+              >
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-trending-up"></use>
+                </svg>
+                <span>Trending</span>
+              </button>
             </li>
-            <li class="menu__item mobile-hide" data-type="topRated">
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-star-empty"></use>
-              </svg>
-              <span>Top Rated</span>
+            <li>
+              <button
+                type="button"
+                class="menu__item mobile-hide"
+                data-type="topRated"
+              >
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-star-empty"></use>
+                </svg>
+                <span>Top Rated</span>
+              </button>
             </li>
 
-            <li
-              class="menu__item mobile-only"
-              data-type="more"
-              id="btn-mobile-more"
-            >
-              <svg class="menu__icon">
-                <use href="src/img/icons.svg#icon-read-more"></use>
-              </svg>
-              <span>More</span>
+            <li>
+              <button
+                type="button"
+                class="menu__item mobile-only"
+                data-type="more"
+                id="btn-mobile-more"
+                aria-expanded="false"
+              >
+                <svg class="menu__icon" aria-hidden="true">
+                  <use href="src/img/icons.svg#icon-read-more"></use>
+                </svg>
+                <span>More</span>
+              </button>
             </li>
           </ul>
         </div>
@@ -101,14 +140,20 @@
       <main class="main">
         <!-- TOP NAV -->
         <header class="topbar">
-          <nav class="topbar__nav">
+          <nav class="topbar__nav" aria-label="Categories">
             <button class="nav__link" data-type="movie">Movies</button>
             <button class="nav__link" data-type="tv">TV Shows</button>
             <button class="nav__link" data-type="anime">Anime</button>
           </nav>
 
           <form class="topbar__search">
-            <input type="text" placeholder="Search" class="search__input" />
+            <input
+              type="search"
+              placeholder="Search"
+              class="search__input"
+              aria-label="Search movies and shows"
+              enterkeyhint="search"
+            />
 
             <button type="submit" class="search__btn" aria-label="Search">
               <svg class="search__icon">
@@ -162,8 +207,6 @@
             </button>
           </div>
         </section>
-
-        <div class="modal"></div>
 
         <!-- POPULAR MOVIES -->
         <section class="movies">
@@ -286,5 +329,8 @@
         </section>
       </aside>
     </div>
+
+    <!-- DETAILS DIALOG: outside .dashboard so the page can be made inert -->
+    <div class="modal" aria-hidden="true"></div>
   </body>
 </html>

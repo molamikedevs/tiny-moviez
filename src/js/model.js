@@ -62,10 +62,9 @@ export const loadDashboard = async function () {
   try {
     // Helper function to catch individual errors and return an empty array
     const safeFetch = url =>
-      AJAX(url, TMDB_API_KEY).catch(err => {
-        console.warn(`Non-fatal error fetching ${url}:`, err);
-        return { results: [] }; // Returns empty data so the app doesn't crash
-      });
+      AJAX(url, TMDB_API_KEY).catch(
+        () => ({ results: [] }), // Returns empty data so the app doesn't crash
+      );
 
     const [
       trending,
@@ -121,7 +120,7 @@ export const loadDashboard = async function () {
     state.theaters = theaters.results.filter(isSafe);
     state.actors = actors.results.filter(isSafe);
   } catch (err) {
-    console.error(`💥 Error loading dashboard: ${err}`);
+    throw err; // The controller shows the error to the user
   }
 };
 

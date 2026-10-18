@@ -123,22 +123,12 @@
 }
 
 // Upcoming Movies Widget
+// Shows its whole page of items; the widget pagination does the paging,
+// so there is no inner scroll area
 .upcoming__list {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  max-height: 360px;
-  overflow-y: auto;
-  padding-right: 0.3rem;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $color-tertiary;
-    border-radius: 3px;
-  }
 }
 
 .upcoming__item {
@@ -188,52 +178,13 @@
   }
 }
 
-.upcoming__reminder {
-  background: none;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-
-  svg {
-    width: 1rem;
-    height: 1rem;
-    fill: $color-text-muted;
-    transition: fill 0.2s;
-  }
-
-  @include hover {
-    background: rgba($color-tertiary, 0.2);
-
-    svg {
-      fill: $color-tertiary;
-    }
-  }
-}
-
 // In Theaters Widget
+// Shows its whole page of items; the widget pagination does the paging,
+// so there is no inner scroll area
 .theaters__list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-height: 380px;
-  overflow-y: auto;
-  padding-right: 0.3rem;
-
-  &::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $color-tertiary;
-    border-radius: 3px;
-  }
 }
 
 .theaters__item {

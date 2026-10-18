@@ -21,9 +21,6 @@ export const createUpcomingItem = function (movie) {
         <h4 title="${title}">${title}</h4>
         <p>Upcoming Release</p>
       </div>
-      <button class="upcoming__reminder" title="Remind me" aria-label="Remind me about ${title}">
-        <svg aria-hidden="true"><use href="${icons}#icon-bell"></use></svg>
-      </button>
     </div>
   `;
 };

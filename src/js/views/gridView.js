@@ -11,6 +11,7 @@ class GridView extends View {
   _errorMessage = 'Failed to load content';
   _titleElement = document.querySelector('.section__title');
   _section = document.querySelector('.movies');
+  _pageTitle = 'TinyMoviez';
 
   constructor() {
     super();
@@ -103,7 +104,13 @@ class GridView extends View {
       this._titleElement.textContent = title;
     }
 
-    document.title = `${title} | TinyMoviez`;
+    this._pageTitle = title;
+    this.restoreDocumentTitle();
+  }
+
+  // Puts the tab title back to the current page (after the modal closes)
+  restoreDocumentTitle() {
+    document.title = `${this._pageTitle} | TinyMoviez`;
   }
 
   // Brings the results heading to the top, below the sticky topbar

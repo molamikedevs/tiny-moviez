@@ -128,6 +128,8 @@
       padding: 0 1.2rem;
       color: $color-primary;
       font-size: 0.9rem;
+      -webkit-appearance: none;
+      appearance: none;
 
       // 16px stops iOS Safari zooming the page on focus
       @media (max-width: 768px) {

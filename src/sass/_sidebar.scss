@@ -45,9 +45,21 @@
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+
+    // The "More" button is phone-only: hide its list item on larger screens
+    li:has(> .mobile-only) {
+      display: none;
+    }
   }
 
   .menu__item {
+    // Reset: menu items are real buttons now
+    width: 100%;
+    border: none;
+    background: none;
+    font: inherit;
+    text-align: left;
+
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -65,6 +77,11 @@
     @include hover {
       background: rgba($color-tertiary, 0.1);
       color: $color-tertiary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-tertiary;
+      outline-offset: 2px;
     }
 
     &.active {
@@ -130,7 +147,9 @@
     }
 
     &__section,
-    &__menu {
+    &__menu,
+    &__menu li,
+    &__menu li:has(> .mobile-only) {
       display: contents;
     }
 
