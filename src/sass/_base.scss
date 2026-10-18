@@ -12,12 +12,24 @@
   box-sizing: inherit;
 }
 
-html,
+:root {
+  // Height of the mobile bottom nav, without the safe-area inset
+  --bottom-nav-h: 4.75rem;
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  // Matches .main so overscroll and bounce never show a different colour
+  background: $color-secondary;
+}
+
 body {
   font-family: $font-secondary;
-  background: $color-secondary-light;
+  background: $color-secondary;
   color: $color-primary;
-  // min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
 }
 
 // Spinner Styles

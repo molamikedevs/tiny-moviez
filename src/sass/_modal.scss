@@ -22,7 +22,7 @@
 
 .modal__content {
   width: min(900px, 95%);
-  max-height: min(85vh, 800px);
+  max-height: min(85dvh, 800px);
   background: $color-secondary;
   border-radius: 20px;
   display: grid;
@@ -36,7 +36,7 @@
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     padding: 1.5rem;
-    max-height: 90vh;
+    max-height: 90dvh;
     overflow-y: auto;
     gap: 1.5rem;
   }
