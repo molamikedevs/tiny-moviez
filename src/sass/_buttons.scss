@@ -12,7 +12,20 @@
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  transition: all 0.2s ease-in-out;
+  transition:
+    background-color $duration-fast $ease-out,
+    color $duration-fast $ease-out,
+    border-color $duration-fast $ease-out,
+    transform $duration-fast $ease-out,
+    filter $duration-fast $ease-out;
+  -webkit-tap-highlight-color: transparent;
+
+  @include pressed;
+
+  &:focus-visible {
+    outline: 2px solid $color-tertiary;
+    outline-offset: 2px;
+  }
 }
 
 .btn__icon {
@@ -26,12 +39,10 @@
   background: $color-tertiary;
   color: #111;
   font-weight: 600;
-}
 
-.btn--primary:hover,
-.btn--details:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
+  @include hover {
+    filter: brightness(1.1);
+  }
 }
 
 .btn--bookmark {
@@ -39,10 +50,9 @@
   color: $color-primary;
   padding: 0.8rem 0.9rem;
   text-align: center;
-}
 
-.btn--bookmark:hover {
-  background: $color-tertiary;
-  color: $color-secondary;
-  transform: translateY(-2px);
+  @include hover {
+    background: $color-tertiary;
+    color: $color-secondary;
+  }
 }

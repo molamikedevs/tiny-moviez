@@ -3,24 +3,30 @@ import icons from 'url:../../img/icons.svg';
 class NavigationView {
   _topbarNav = document.querySelector('.topbar__nav');
   _sidebarNav = document.querySelector('.sidebar');
+  _moreBtn = document.querySelector('#btn-mobile-more');
   _moreBtnSpan = document.querySelector('#btn-mobile-more span');
   _moreBtnIcon = document.querySelector('#btn-mobile-more .menu__icon use');
 
   //Syncs active state across the entire app
   setGlobalActive(type) {
-    // 1. Remove active class from ALL navigation links
+    // Only navigation buttons: cards and the hero also carry data-type
     const allLinks = document.querySelectorAll('.nav__link, .menu__item');
-    allLinks.forEach(link => link.classList.remove('active'));
 
-    // 2. Add active class to ANY link that matches the current type
-    const matchingLinks = document.querySelectorAll(`[data-type="${type}"]`);
-    matchingLinks.forEach(link => link.classList.add('active'));
+    allLinks.forEach(link => {
+      const isActive = link.dataset.type === type;
+      link.classList.toggle('active', isActive);
+
+      // Tells screen readers which page is showing
+      if (isActive) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
   }
 
   toggleMobileMenu() {
     this._sidebarNav.classList.toggle('expanded');
 
     const isExpanded = this._sidebarNav.classList.contains('expanded');
+    this._moreBtn?.setAttribute('aria-expanded', String(isExpanded));
 
     // Swap the Text
     if (this._moreBtnSpan) {
@@ -37,6 +43,7 @@ class NavigationView {
 
   closeMobileMenu() {
     this._sidebarNav.classList.remove('expanded');
+    this._moreBtn?.setAttribute('aria-expanded', 'false');
 
     // Reset Text
     if (this._moreBtnSpan) {
