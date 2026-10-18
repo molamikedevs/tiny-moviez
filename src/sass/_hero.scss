@@ -10,11 +10,23 @@
   align-items: center;
   padding: 3rem;
   margin-bottom: 2.5rem;
+  background: $color-secondary-light; // shown while the backdrop loads
 
   @media (max-width: 768px) {
     height: 280px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+  }
+
+  // display: flex above would otherwise beat the hidden attribute
+  &[hidden] {
+    display: none;
+  }
+
+  @include hover {
+    .hero__img {
+      transform: scale(1.03);
+    }
   }
 }
 
@@ -28,11 +40,15 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
-}
+  opacity: 0;
+  transition:
+    opacity 400ms $ease-out,
+    transform 600ms $ease-out;
 
-.hero:hover .hero__img {
-  transform: scale(1.05);
+  // Set by heroView once the image is decoded
+  &.is-loaded {
+    opacity: 1;
+  }
 }
 
 .hero__overlay {
@@ -54,14 +70,18 @@
 }
 
 .hero__title {
+  font-family: $font-primary;
   font-size: 3rem;
   font-weight: 800;
+  letter-spacing: -0.02em;
   margin-bottom: 1rem;
-  line-height: 1.2;
+  line-height: 1.1;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-wrap: balance;
+  @include line-clamp(2);
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 }
 
@@ -79,18 +99,21 @@
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
     min-width: 140px;
+
+    @media (max-width: 768px) {
+      padding: 0.75rem 1.5rem;
+      min-width: 0;
+    }
 
     &--primary {
       background: $color-tertiary;
       color: $color-secondary;
 
-      &:hover {
-        background: color.adjust($color-tertiary, $lightness: -2%);
-        transform: translateY(-3px);
+      @include hover {
+        background: color.adjust($color-tertiary, $lightness: 4%);
         box-shadow: 0 10px 20px rgba($color-tertiary, 0.3);
       }
     }
@@ -101,9 +124,13 @@
       color: $color-primary;
       border: $bottom-border;
 
-      &:hover {
+      @include hover {
         background: $color-secondary-light;
-        transform: translateY(-3px);
+        border-color: $color-tertiary;
+        color: $color-tertiary;
+      }
+
+      &.is-bookmarked {
         border-color: $color-tertiary;
         color: $color-tertiary;
       }
@@ -113,7 +140,7 @@
       width: 1.2rem;
       height: 1.2rem;
       fill: currentColor;
-      flex-shrink: 0; /* Add this */
+      flex-shrink: 0;
     }
   }
 }
@@ -136,7 +163,6 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  border: none;
   background: rgba($color-secondary-light, 0.8);
   backdrop-filter: blur(5px);
   color: $color-primary;
@@ -144,16 +170,32 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    background-color $duration-fast $ease-out,
+    border-color $duration-fast $ease-out,
+    transform $duration-fast $ease-out;
   border: $bottom-border;
+  -webkit-tap-highlight-color: transparent;
 
-  &:hover {
-    background: $color-tertiary;
-    transform: scale(1.1);
-    border-color: $color-tertiary;
+  @media (max-width: 768px) {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
-  &__icon {
+  @include hover {
+    background: $color-tertiary;
+    border-color: $color-tertiary;
+    color: $color-secondary;
+  }
+
+  @include pressed(0.92);
+
+  &:focus-visible {
+    outline: 2px solid $color-tertiary;
+    outline-offset: 2px;
+  }
+
+  svg {
     width: 1.2rem;
     height: 1.2rem;
     fill: currentColor;

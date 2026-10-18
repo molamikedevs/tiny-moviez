@@ -14,13 +14,16 @@
     display: none !important;
   }
 
-  __logo {
+  &__logo {
     font-family: $font-primary;
-    font-weight: 800;
-    letter-spacing: 2px;
-    font-size: 1.2rem;
-    line-height: 1.2;
     color: $color-tertiary;
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      line-height: 1.05;
+    }
   }
 
   &__section {
@@ -51,10 +54,15 @@
     padding: 0.7rem 1rem;
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition:
+      background-color $duration-fast $ease-out,
+      color $duration-fast $ease-out;
     color: $color-text-muted;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 
-    &:hover {
+    @include hover {
       background: rgba($color-tertiary, 0.1);
       color: $color-tertiary;
     }

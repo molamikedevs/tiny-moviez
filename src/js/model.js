@@ -1,10 +1,10 @@
 import {
+  ANIME_ORIGINAL_LANGUAGE,
   GENRE_ANIMATION_ID,
   RESULT_PER_PAGE,
   TMDB_API_KEY,
-  TMDB_BASE_URL,
 } from '../js/config';
-import { AJAX } from './helpers';
+import { AJAX, buildTmdbUrl } from './helpers';
 
 /**
  * APPLICATION STATE
@@ -43,6 +43,19 @@ export const state = {
 };
 
 /**
+ * Second line of defence after include_adult=false in the URL.
+ * Drops anything TMDB still flags as adult.
+ */
+const isSafe = item => item && item.adult !== true;
+
+// Anime = Animation genre + Japanese original language, for TV and movies
+const ANIME_PARAMS = {
+  with_genres: GENRE_ANIMATION_ID,
+  with_original_language: ANIME_ORIGINAL_LANGUAGE,
+  sort_by: 'popularity.desc',
+};
+
+/**
  * Fetches all initial dashboard data in parallel for maximum performance.
  */
 export const loadDashboard = async function () {
@@ -59,43 +72,54 @@ export const loadDashboard = async function () {
       popularMovies,
       topRated,
       tvSeries,
-      animation,
+      animeTv,
+      animeMovies,
       upcoming,
       theaters,
       actors,
     ] = await Promise.all([
-      safeFetch(`${TMDB_BASE_URL}/trending/all/week`),
-      safeFetch(`${TMDB_BASE_URL}/movie/popular`),
-      safeFetch(`${TMDB_BASE_URL}/movie/top_rated`),
-      safeFetch(`${TMDB_BASE_URL}/tv/popular`),
-      safeFetch(
-        `${TMDB_BASE_URL}/discover/movie?with_genres=${GENRE_ANIMATION_ID}`,
-      ),
-      safeFetch(`${TMDB_BASE_URL}/movie/upcoming`),
-      safeFetch(`${TMDB_BASE_URL}/movie/now_playing`),
-      safeFetch(`${TMDB_BASE_URL}/person/popular`),
+      safeFetch(buildTmdbUrl('/trending/all/week')),
+      safeFetch(buildTmdbUrl('/movie/popular')),
+      safeFetch(buildTmdbUrl('/movie/top_rated')),
+      safeFetch(buildTmdbUrl('/tv/popular')),
+      safeFetch(buildTmdbUrl('/discover/tv', ANIME_PARAMS)),
+      safeFetch(buildTmdbUrl('/discover/movie', ANIME_PARAMS)),
+      safeFetch(buildTmdbUrl('/movie/upcoming')),
+      safeFetch(buildTmdbUrl('/movie/now_playing')),
+      safeFetch(buildTmdbUrl('/person/popular')),
     ]);
 
     // Data Normalization
-    state.library.movie = popularMovies.results.map(m => ({
+    state.library.movie = popularMovies.results.filter(isSafe).map(m => ({
       ...m,
       media_type: 'movie',
     }));
-    state.library.tv = tvSeries.results.map(m => ({ ...m, media_type: 'tv' }));
-    state.library.anime = animation.results.map(m => ({
+    state.library.tv = tvSeries.results
+      .filter(isSafe)
+      .map(m => ({ ...m, media_type: 'tv' }));
+
+    // Series and films merged, most popular first
+    state.library.anime = [
+      ...animeTv.results.map(m => ({ ...m, media_type: 'tv' })),
+      ...animeMovies.results.map(m => ({ ...m, media_type: 'movie' })),
+    ]
+      .filter(isSafe)
+      .sort((a, b) => b.popularity - a.popularity);
+
+    state.library.topRated = topRated.results.filter(isSafe).map(m => ({
       ...m,
       media_type: 'movie',
     }));
-    state.library.topRated = topRated.results.map(m => ({
-      ...m,
-      media_type: 'movie',
-    }));
-    state.library.trending = trending.results;
+
+    // trending/all also returns people, who have no backdrop or details page
+    state.library.trending = trending.results.filter(
+      item => isSafe(item) && item.media_type !== 'person',
+    );
 
     // Sidebar Data
-    state.upcoming = upcoming.results;
-    state.theaters = theaters.results;
-    state.actors = actors.results;
+    state.upcoming = upcoming.results.filter(isSafe);
+    state.theaters = theaters.results.filter(isSafe);
+    state.actors = actors.results.filter(isSafe);
   } catch (err) {
     console.error(`💥 Error loading dashboard: ${err}`);
   }
@@ -120,13 +144,13 @@ export const loadSearch = async function (query) {
   try {
     state.search.query = query;
     const data = await AJAX(
-      `${TMDB_BASE_URL}/search/multi?query=${encodeURIComponent(query)}`,
+      buildTmdbUrl('/search/multi', { query }),
       TMDB_API_KEY,
     );
 
-    // Filter out actors/directors from the search results
+    // Filter out actors/directors and anything flagged adult
     state.search.results = data.results.filter(
-      item => item.media_type !== 'person',
+      item => isSafe(item) && item.media_type !== 'person',
     );
     state.search.page = 1;
   } catch (err) {
@@ -136,7 +160,11 @@ export const loadSearch = async function (query) {
 
 export const loadDetails = async function (type, id) {
   try {
-    const data = await AJAX(`${TMDB_BASE_URL}/${type}/${id}`, TMDB_API_KEY);
+    const data = await AJAX(buildTmdbUrl(`/${type}/${id}`), TMDB_API_KEY);
+
+    // Never open a details view for adult content
+    if (!isSafe(data)) throw new Error('This title is not available');
+
     state.details = data;
   } catch (err) {
     throw err;
@@ -170,7 +198,7 @@ const initBookmarks = function () {
   const storage = localStorage.getItem('bookmarks');
 
   // If there is data in storage, parse the JSON string back into an array/objects
-  if (storage) state.bookmarks = JSON.parse(storage);
+  if (storage) state.bookmarks = JSON.parse(storage).filter(isSafe);
 };
 initBookmarks();
 
@@ -200,7 +228,7 @@ export const addRecent = function (item) {
 
 const initRecent = function () {
   const storage = localStorage.getItem('recent');
-  if (storage) state.recent = JSON.parse(storage);
+  if (storage) state.recent = JSON.parse(storage).filter(isSafe);
 };
 
 initRecent();

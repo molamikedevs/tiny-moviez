@@ -11,6 +11,11 @@
   border-top: $bottom-border;
   flex-wrap: wrap;
 
+  // Empty until paginationView renders: no stray border line
+  &:empty {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     gap: 0.5rem;
     padding: 1.5rem 0 2rem 0;
@@ -30,11 +35,23 @@
   background: $color-secondary-light;
   color: $color-primary;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background-color $duration-fast $ease-out,
+    color $duration-fast $ease-out,
+    border-color $duration-fast $ease-out,
+    transform $duration-fast $ease-out;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: $bottom-border;
+  -webkit-tap-highlight-color: transparent;
+
+  @include pressed;
+
+  &:focus-visible {
+    outline: 2px solid $color-tertiary;
+    outline-offset: 2px;
+  }
 
   @media (max-width: 768px) {
     min-width: 40px;
@@ -43,7 +60,7 @@
     font-size: 0.9rem;
   }
 
-  &:hover:not(:disabled) {
+  @include hover(':not(:disabled)') {
     background: $color-tertiary;
     color: $color-secondary;
     transform: translateY(-2px);
@@ -84,19 +101,13 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: $color-text-muted;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  font-variant-numeric: tabular-nums;
   border: 1px solid transparent;
 
   @media (max-width: 768px) {
     min-width: 36px;
     height: 36px;
     font-size: 0.85rem;
-  }
-
-  &:hover {
-    background: rgba($color-tertiary, 0.1);
-    color: $color-tertiary;
   }
 
   &.active {

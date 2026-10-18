@@ -78,7 +78,8 @@ class DetailsView extends View {
 
   handleDetailsClick(handler) {
     document.addEventListener('click', e => {
-      const btn = e.target.closest('.btn--details');
+      // Cards (whole card) and the hero Details button
+      const btn = e.target.closest('.js-details');
       if (!btn) return;
 
       const id = btn.dataset.id;

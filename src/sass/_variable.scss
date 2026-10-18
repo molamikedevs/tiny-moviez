@@ -4,9 +4,60 @@ $color-secondary-light: #21242d;
 $color-secondary-dark: #374151;
 $color-tertiary: #00b9ae;
 $color-text-muted: #a3aab5; // New variable for WCAG AA contrast compliance
+$color-rating: #f5c518;
 
 $bottom-border: 1px solid rgba(255, 255, 255, 0.1);
 
 // Fonts
 $font-primary: 'Open Sans', sans-serif;
 $font-secondary: 'Lato', sans-serif;
+
+// Motion: one curve for everything that settles into place
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+$duration-fast: 160ms;
+$duration-base: 240ms;
+
+/// Hover styles only for devices that really hover (mouse, trackpad).
+/// Phones skip them, so a tapped element never stays "hovered".
+/// @param {String} $extra - Appended to :hover, e.g. ':not(:disabled)'
+@mixin hover($extra: '') {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover#{$extra} {
+      @content;
+    }
+  }
+}
+
+/// Pressed feedback for touch and click
+@mixin pressed($scale: 0.97) {
+  &:active {
+    transform: scale($scale);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+/// Clamp text to a number of lines with an ellipsis
+@mixin line-clamp($lines) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+  overflow: hidden;
+}
+
+/// The brand marker: the same teal bar as the active sidebar item
+@mixin teal-bar($height: 1em) {
+  &::before {
+    content: '';
+    flex-shrink: 0;
+    width: 4px;
+    height: $height;
+    border-radius: 2px;
+    background: $color-tertiary;
+  }
+}
