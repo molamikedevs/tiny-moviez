@@ -164,7 +164,7 @@ export const loadDetails = async function (type, id) {
     // Never open a details view for adult content
     if (!isSafe(data)) throw new Error('This title is not available');
 
-    state.details = data;
+    state.details = { ...data, media_type: type };
   } catch (err) {
     throw err;
   }
