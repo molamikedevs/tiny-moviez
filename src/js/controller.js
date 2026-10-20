@@ -52,13 +52,17 @@ const controlCategory = function (type) {
 
   navigationView.closeMobileMenu();
 
+  // The URL is the single source of truth: a click only changes the hash,
+  // and hashchange brings us back here to render
+  if (window.location.hash.slice(1) !== type) {
+    window.location.hash = type;
+    return;
+  }
+
   // 1. Update state tracking
   model.state.ui.category = type;
   model.state.ui.page = 1;
   model.state.ui.mode = 'category';
-
-  // Update url to match category
-  window.location.hash = type;
 
   // Sync the Topbar and Sidebar visual states
   navigationView.setGlobalActive(type);
@@ -85,7 +89,7 @@ const controlCategory = function (type) {
     return;
   }
 
-  // 3. Get only the 10 results needed for page 1
+  // 3. Get only the results needed for page 1
   const results = model.getSearchResult(data);
 
   // 4. Update the UI components
@@ -128,7 +132,6 @@ const controlRouting = function () {
     'trending',
     'topRated',
     'bookmarks',
-    'upcoming',
     'recent',
   ];
 
