@@ -181,14 +181,15 @@ export const addBookmark = function (item) {
 };
 
 export const deleteBookmark = function (id) {
-  // Find the exact position of the item we want to remove
+  // Find the position of the bookmark to remove
   const index = state.bookmarks.findIndex(el => el.id === id);
 
-  // Remove 1 element at that index
-  state.bookmarks.splice(index, 1);
+  // findIndex returns -1 when nothing matches, and splice(-1, 1)
+  // would delete the last bookmark, so stop here instead
+  if (index === -1) return;
 
-  // Mark current item as NOT bookmarked
-  if (id === state.details.id) state.details.bookmarked = false;
+  // Remove 1 element at that index, then save the updated list
+  state.bookmarks.splice(index, 1);
   persistBookmarks();
 };
 
