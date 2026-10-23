@@ -3,7 +3,7 @@ import {
   GENRE_ANIMATION_ID,
   RESULT_PER_PAGE,
   TMDB_API_KEY,
-} from '../js/config';
+} from './config';
 import { AJAX, buildTmdbUrl } from './helpers';
 
 /**
@@ -31,7 +31,7 @@ export const state = {
   ui: {
     category: 'tv', // Default category
     page: 1,
-    activeData: [], // A reference pointing to the currently viewed array in the library
+    activeData: [], // Points to whichever array the grid is showing (category, bookmarks, recent or search)
     resultPerPage: RESULT_PER_PAGE,
     mode: 'category',
   },
@@ -59,80 +59,76 @@ const ANIME_PARAMS = {
  * Fetches all initial dashboard data in parallel for maximum performance.
  */
 export const loadDashboard = async function () {
-  try {
-    // Helper function to catch individual errors and return an empty array
-    const safeFetch = url =>
-      AJAX(url, TMDB_API_KEY).catch(
-        () => ({ results: [] }), // Returns empty data so the app doesn't crash
-      );
-
-    const [
-      trending,
-      popularMovies,
-      topRated,
-      tvSeries,
-      animeTv,
-      animeMovies,
-      upcoming,
-      theaters,
-      actors,
-    ] = await Promise.all([
-      safeFetch(buildTmdbUrl('/trending/all/week')),
-      safeFetch(buildTmdbUrl('/movie/popular')),
-      safeFetch(buildTmdbUrl('/movie/top_rated')),
-      safeFetch(buildTmdbUrl('/tv/popular')),
-      safeFetch(buildTmdbUrl('/discover/tv', ANIME_PARAMS)),
-      safeFetch(buildTmdbUrl('/discover/movie', ANIME_PARAMS)),
-      safeFetch(buildTmdbUrl('/movie/upcoming')),
-      safeFetch(buildTmdbUrl('/movie/now_playing')),
-      safeFetch(buildTmdbUrl('/person/popular')),
-    ]);
-
-    // Data Normalization
-    state.library.movie = popularMovies.results.filter(isSafe).map(m => ({
-      ...m,
-      media_type: 'movie',
-    }));
-    state.library.tv = tvSeries.results
-      .filter(isSafe)
-      .map(m => ({ ...m, media_type: 'tv' }));
-
-    // Series and films merged, most popular first
-    state.library.anime = [
-      ...animeTv.results.map(m => ({ ...m, media_type: 'tv' })),
-      ...animeMovies.results.map(m => ({ ...m, media_type: 'movie' })),
-    ]
-      .filter(isSafe)
-      .sort((a, b) => b.popularity - a.popularity);
-
-    state.library.topRated = topRated.results.filter(isSafe).map(m => ({
-      ...m,
-      media_type: 'movie',
-    }));
-
-    // trending/all also returns people, who have no backdrop or details page
-    state.library.trending = trending.results.filter(
-      item => isSafe(item) && item.media_type !== 'person',
+  // Catches a failed request and returns empty results, so one failure can't break Promise.all
+  const safeFetch = url =>
+    AJAX(url, TMDB_API_KEY).catch(
+      () => ({ results: [] }), // Returns empty data so the app doesn't crash
     );
 
-    // Sidebar Data
-    state.upcoming = upcoming.results.filter(isSafe);
-    state.theaters = theaters.results.filter(isSafe);
-    state.actors = actors.results.filter(isSafe);
-  } catch (err) {
-    throw err; // The controller shows the error to the user
-  }
+  const [
+    trending,
+    popularMovies,
+    topRated,
+    tvSeries,
+    animeTv,
+    animeMovies,
+    upcoming,
+    theaters,
+    actors,
+  ] = await Promise.all([
+    safeFetch(buildTmdbUrl('/trending/all/week')),
+    safeFetch(buildTmdbUrl('/movie/popular')),
+    safeFetch(buildTmdbUrl('/movie/top_rated')),
+    safeFetch(buildTmdbUrl('/tv/popular')),
+    safeFetch(buildTmdbUrl('/discover/tv', ANIME_PARAMS)),
+    safeFetch(buildTmdbUrl('/discover/movie', ANIME_PARAMS)),
+    safeFetch(buildTmdbUrl('/movie/upcoming')),
+    safeFetch(buildTmdbUrl('/movie/now_playing')),
+    safeFetch(buildTmdbUrl('/person/popular')),
+  ]);
+
+  // Data Normalization
+  state.library.movie = popularMovies.results.filter(isSafe).map(m => ({
+    ...m,
+    media_type: 'movie',
+  }));
+  state.library.tv = tvSeries.results
+    .filter(isSafe)
+    .map(m => ({ ...m, media_type: 'tv' }));
+
+  // Series and films merged, most popular first
+  state.library.anime = [
+    ...animeTv.results.map(m => ({ ...m, media_type: 'tv' })),
+    ...animeMovies.results.map(m => ({ ...m, media_type: 'movie' })),
+  ]
+    .filter(isSafe)
+    .sort((a, b) => b.popularity - a.popularity);
+
+  state.library.topRated = topRated.results.filter(isSafe).map(m => ({
+    ...m,
+    media_type: 'movie',
+  }));
+
+  // trending/all also returns people, who have no backdrop or details page
+  state.library.trending = trending.results.filter(
+    item => isSafe(item) && item.media_type !== 'person',
+  );
+
+  // Sidebar Data
+  state.upcoming = upcoming.results.filter(isSafe);
+  state.theaters = theaters.results.filter(isSafe);
+  state.actors = actors.results.filter(isSafe);
 };
 
 /**
- * Returns a specific slice of the active array based on the current page number.
- * Used for client-side pagination.
+ * Client-side pagination: returns one page of items from an array.
+ * Example with 6 per page: page 1 = items 0-5, page 2 = items 6-11.
  */
 export const getSearchResult = function (data, page = state.ui.page) {
-  const start = (page - 1) * state.ui.resultPerPage; // e.g., Page 1: (1-1) * 10 = 0
-  const end = page * state.ui.resultPerPage; // e.g., Page 1: 1 * 10 = 10
+  const start = (page - 1) * state.ui.resultPerPage; // page 2: (2 - 1) * 6 = 6
+  const end = page * state.ui.resultPerPage; // page 2: 2 * 6 = 12
 
-  return data.slice(start, end); // Returns items 0-9
+  return data.slice(start, end); // slice excludes end, so items 6 to 11
 };
 
 export const getTotalPages = function (data) {
@@ -140,34 +136,25 @@ export const getTotalPages = function (data) {
 };
 
 export const loadSearch = async function (query) {
-  try {
-    state.search.query = query;
-    const data = await AJAX(
-      buildTmdbUrl('/search/multi', { query }),
-      TMDB_API_KEY,
-    );
+  state.search.query = query;
+  const data = await AJAX(
+    buildTmdbUrl('/search/multi', { query }),
+    TMDB_API_KEY,
+  );
 
-    // Filter out actors/directors and anything flagged adult
-    state.search.results = data.results.filter(
-      item => isSafe(item) && item.media_type !== 'person',
-    );
-    state.search.page = 1;
-  } catch (err) {
-    throw err; // Throwing here allows the Controller to catch it and trigger renderError()
-  }
+  // Filter out actors/directors and anything flagged adult
+  state.search.results = data.results.filter(
+    item => isSafe(item) && item.media_type !== 'person',
+  );
 };
 
 export const loadDetails = async function (type, id) {
-  try {
-    const data = await AJAX(buildTmdbUrl(`/${type}/${id}`), TMDB_API_KEY);
+  const data = await AJAX(buildTmdbUrl(`/${type}/${id}`), TMDB_API_KEY);
 
-    // Never open a details view for adult content
-    if (!isSafe(data)) throw new Error('This title is not available');
+  // Never open a details view for adult content
+  if (!isSafe(data)) throw new Error('This title is not available');
 
-    state.details = { ...data, media_type: type };
-  } catch (err) {
-    throw err;
-  }
+  state.details = { ...data, media_type: type };
 };
 
 const persistBookmarks = function () {
@@ -181,14 +168,15 @@ export const addBookmark = function (item) {
 };
 
 export const deleteBookmark = function (id) {
-  // Find the exact position of the item we want to remove
+  // Find the position of the bookmark to remove
   const index = state.bookmarks.findIndex(el => el.id === id);
 
-  // Remove 1 element at that index
-  state.bookmarks.splice(index, 1);
+  // findIndex returns -1 when nothing matches, and splice(-1, 1)
+  // would delete the last bookmark, so stop here instead
+  if (index === -1) return;
 
-  // Mark current item as NOT bookmarked
-  if (id === state.details.id) state.details.bookmarked = false;
+  // Remove 1 element at that index, then save the updated list
+  state.bookmarks.splice(index, 1);
   persistBookmarks();
 };
 
