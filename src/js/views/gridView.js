@@ -25,12 +25,12 @@ class GridView extends View {
   /**
    * Fades each poster in once it has loaded, and swaps in the default
    * poster when an image fails. Load and error events don't bubble,
-   * so one capturing listener covers every card ever rendered.
+   * so one capturing listener on the grid covers every card ever rendered.
    */
   _addHandlerPosterLoad() {
     const markLoaded = e => {
       const img = e.target;
-      if (!img.classList?.contains('movie-card__poster')) return;
+      if (!img.classList.contains('movie-card__poster')) return;
 
       if (e.type === 'error' && !img.src.endsWith(noPosterImg)) {
         img.src = noPosterImg; // retry once with the fallback
@@ -57,9 +57,7 @@ class GridView extends View {
       const btn = e.target.closest('.js-bookmark');
       if (!btn) return;
 
-      // Instant feedback before the model and storage update
-      btn.classList.remove('is-popping');
-      void btn.offsetWidth; // restart the animation on repeat taps
+      // Instant feedback: play the pop animation, remove the class when done
       btn.classList.add('is-popping');
       btn.addEventListener(
         'animationend',

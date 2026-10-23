@@ -133,7 +133,7 @@ class DetailsView extends View {
     document.documentElement.classList.remove('is-modal-open');
 
     // Back to the card or button that opened it
-    this._lastFocus?.focus?.({ preventScroll: true });
+    if (this._lastFocus) this._lastFocus.focus();
     this._lastFocus = null;
 
     this._onClose?.();

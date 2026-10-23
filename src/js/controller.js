@@ -40,8 +40,24 @@ const getCategoryData = function (type) {
   return model.state.library[type];
 };
 
+// Ids of every bookmarked title, read from the model by the controller
+const getBookmarkedIds = function () {
+  return model.state.bookmarks.map(b => b.id);
+};
+
 /**
- * Handles category switching (Movies, TV Shows, Anime)
+ * Copies of the items with an isBookmarked flag, so the views can show
+ * the bookmark state without reading the model themselves.
+ * @param {Object[]} items - The items about to be rendered
+ */
+const withBookmarkFlags = function (items) {
+  const ids = getBookmarkedIds();
+  return items.map(item => ({ ...item, isBookmarked: ids.includes(item.id) }));
+};
+
+/**
+ * Renders a category page: movies, TV, anime, trending, top rated,
+ * bookmarks or recent.
  * @param {string} type - The dataset type from the clicked navigation button
  */
 const controlCategory = function (type) {
@@ -85,7 +101,7 @@ const controlCategory = function (type) {
     };
 
     gridView.renderError(messages[type]);
-    paginationView.clear?.();
+    paginationView.clear();
     return;
   }
 
@@ -93,7 +109,7 @@ const controlCategory = function (type) {
   const results = model.getSearchResult(data);
 
   // 4. Update the UI components
-  gridView.render(results);
+  gridView.render(withBookmarkFlags(results));
   paginationView.paginationRenderer(
     model.state.ui.page,
     model.getTotalPages(data),
@@ -110,7 +126,7 @@ const controlPagination = function (page) {
   const data = model.state.ui.activeData;
   const results = model.getSearchResult(data);
 
-  gridView.render(results);
+  gridView.render(withBookmarkFlags(results));
   paginationView.paginationRenderer(page, model.getTotalPages(data));
 };
 
@@ -135,8 +151,11 @@ const controlRouting = function () {
     'recent',
   ];
 
+  // 4. Render a valid category; send anything unknown (e.g. #xyz) to 'tv'
   if (validCategories.includes(hash)) {
     controlCategory(hash);
+  } else {
+    window.location.hash = 'tv';
   }
 };
 
@@ -158,8 +177,6 @@ const controlSearch = async function () {
     model.state.ui.page = 1;
     model.state.ui.activeData = data;
 
-    const results = model.getSearchResult(data);
-
     gridView.updateTitle(`Search Results for "${query}"`);
 
     navigationView.setGlobalActive('none');
@@ -167,7 +184,17 @@ const controlSearch = async function () {
     // Results replace the hero so they start at the top of the page
     heroView.hide();
 
-    gridView.render(results);
+    // The search worked but matched nothing: say so, instead of
+    // the default "Failed to load content"
+    if (data.length === 0) {
+      gridView.renderError(`No results for "${query}"`);
+      paginationView.clear();
+      return;
+    }
+
+    const results = model.getSearchResult(data);
+
+    gridView.render(withBookmarkFlags(results));
 
     paginationView.paginationRenderer(
       model.state.ui.page,
@@ -191,7 +218,8 @@ const controlDashboard = async function () {
     return;
   }
 
-  //Initialize the hero with trending movies once
+  // Start the hero with trending titles and the current bookmarks
+  heroView.setBookmarkedIds(getBookmarkedIds());
   heroView.setData(model.state.library.trending);
 
   upcomingView.render(model.state.upcoming);
@@ -206,13 +234,13 @@ const controlDashboard = async function () {
 
 const controlDetails = async function (type, id) {
   try {
-    // 1. Render.renderSpinner
+    // 1. Show a spinner in the modal
     detailsView.renderSpinner();
 
     // 2. Fetch the data
     await model.loadDetails(type, id);
 
-    // 3. Add this item to the Recently Viewed history!
+    // 3. Add this item to the Recently Viewed history
     model.addRecent(model.state.details);
 
     const movieTitle = model.state.details.title || model.state.details.name;
@@ -255,10 +283,12 @@ const controlToggleBookmark = function (id) {
 
     if (totalPages === 0) {
       gridView.renderError('You have no bookmarks yet.');
-      paginationView.clear?.();
+      paginationView.clear();
     } else {
       model.state.ui.page = Math.min(model.state.ui.page, totalPages);
-      gridView.render(model.getSearchResult(model.state.bookmarks));
+      gridView.render(
+        withBookmarkFlags(model.getSearchResult(model.state.bookmarks)),
+      );
       paginationView.paginationRenderer(model.state.ui.page, totalPages);
     }
   } else {
@@ -267,7 +297,7 @@ const controlToggleBookmark = function (id) {
   }
 
   // Keep the Hero button in sync
-  heroView.renderHero();
+  heroView.setBookmarkedIds(getBookmarkedIds());
 };
 
 /**
@@ -298,9 +328,7 @@ const init = async function () {
   heroView.addHandlerHeroNav();
   gridView.addHandlerBookmark(controlToggleBookmark);
 
-  detailsView.handleDetailsClick(function (type, id) {
-    controlDetails(type, id);
-  });
+  detailsView.handleDetailsClick(controlDetails);
 
   // Closing details puts the tab title back to the page underneath
   detailsView.addHandlerClose(function () {
@@ -310,8 +338,7 @@ const init = async function () {
   // 1. Listen for future URL changes
   window.addEventListener('hashchange', controlRouting);
 
-  // 2. Manually run the router right now to load the first page!
-  // (This safely replaces both controlCategory('tv') AND the 'load' listener)
+  // 2. Run the router once now to render the first page
   controlRouting();
 };
 

@@ -1,7 +1,6 @@
 import icons from 'url:../../../img/icons.svg';
 import noPosterImg from 'url:../../../img/no-poster.png';
 import { escapeHTML } from '../../helpers';
-import { state } from '../../model';
 
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -16,15 +15,14 @@ export const getPosterUrl = function (item) {
 export { noPosterImg };
 
 export const createMovieCard = function (data) {
-  const { vote_average, id, media_type } = data;
+  // isBookmarked is added by the controller, so the view never reads the model
+  const { vote_average, id, media_type, isBookmarked = false } = data;
   const title = escapeHTML(data.title || data.name || 'Untitled');
 
   // Movies have release_date, series have first_air_date
   const year = (data.release_date || data.first_air_date || '').slice(0, 4);
   const rating = vote_average ? vote_average.toFixed(1) : 'NR';
 
-  // Check if this specific movie's ID exists in the bookmarks array
-  const isBookmarked = state.bookmarks.some(b => b.id === id);
   const bookmarkLabel = isBookmarked
     ? `Remove ${title} from bookmarks`
     : `Bookmark ${title}`;
