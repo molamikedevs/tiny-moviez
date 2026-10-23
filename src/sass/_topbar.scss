@@ -1,5 +1,8 @@
 @use 'variable' as *;
 
+// A simple x, drawn with a mask so it takes the background colour
+$icon-clear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l12 12M18 6L6 18' stroke='black' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+
 .topbar {
   display: flex;
   align-items: center;
@@ -122,10 +125,13 @@
 
     .search__input {
       flex: 1;
+      // Lets the input shrink, so it never pushes the search button out
+      min-width: 0;
       height: 100%;
       border: none;
       background: transparent;
-      padding: 0 1.2rem;
+      // Icon on the left, clear (x) on the right
+      padding: 0 1rem 0 0;
       color: $color-primary;
       font-size: 0.9rem;
       -webkit-appearance: none;
@@ -143,11 +149,30 @@
       &:focus {
         outline: none;
       }
+
+      // Chrome and Safari draw their own blue clear (x) button on
+      // type="search". Replace it with one that matches the theme.
+      &::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        margin-left: 0.5rem;
+        cursor: pointer;
+        background-color: $color-text-muted;
+        -webkit-mask: $icon-clear center / contain no-repeat;
+        mask: $icon-clear center / contain no-repeat;
+
+        &:hover {
+          background-color: $color-tertiary;
+        }
+      }
     }
 
     .search__btn {
       height: 100%;
       width: 46px;
+      flex-shrink: 0;
       border: none;
       background: transparent;
       display: flex;

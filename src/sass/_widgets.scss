@@ -236,57 +236,6 @@
   }
 }
 
-.theaters__showtimes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-
-  .showtime {
-    background: rgba($color-tertiary, 0.1);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    color: $color-tertiary;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    @include hover {
-      background: $color-tertiary;
-      color: $color-secondary;
-    }
-  }
-}
-
-.theaters__ticket {
-  background: none;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-  background: rgba($color-tertiary, 0.1);
-
-  svg {
-    width: 1rem;
-    height: 1rem;
-    fill: $color-tertiary;
-    transition: fill 0.2s;
-  }
-
-  @include hover {
-    background: $color-tertiary;
-
-    svg {
-      fill: $color-secondary;
-    }
-  }
-}
-
 // Popular Actors Widget
 .actors__list {
   display: flex;

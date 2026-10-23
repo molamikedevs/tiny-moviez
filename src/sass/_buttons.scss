@@ -28,14 +28,7 @@
   }
 }
 
-.btn__icon {
-  width: 1.7rem;
-  height: 1.7rem;
-  fill: currentColor;
-}
-
-.btn--primary,
-.btn--details {
+.btn--primary {
   background: $color-tertiary;
   color: #111;
   font-weight: 600;
