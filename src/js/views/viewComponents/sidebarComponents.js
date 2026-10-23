@@ -6,17 +6,30 @@ const IMG_URL = 'https://image.tmdb.org/t/p/w185';
 
 const imageOrFallback = path => (path ? IMG_URL + path : noPosterImg);
 
-export const createUpcomingItem = function (movie) {
-  const date = new Date(movie.release_date);
-  const month = date
+/**
+ * Turns '2026-11-05' into 'NOV 5'.
+ * new Date('2026-11-05') is read as UTC midnight, which shows the previous
+ * day in timezones behind UTC, so the parts are passed in as local time.
+ */
+const formatReleaseDate = function (dateString) {
+  if (!dateString) return 'TBA';
+
+  const [year, month, day] = dateString.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+
+  const monthName = date
     .toLocaleString('default', { month: 'short' })
     .toUpperCase();
-  const day = date.getDate();
+
+  return `${monthName} ${day}`;
+};
+
+export const createUpcomingItem = function (movie) {
   const title = escapeHTML(movie.title);
 
   return `
     <div class="upcoming__item" data-id="${movie.id}">
-      <div class="upcoming__date">${month} ${day}</div>
+      <div class="upcoming__date">${formatReleaseDate(movie.release_date)}</div>
       <div class="upcoming__info">
         <h4 title="${title}">${title}</h4>
         <p>Upcoming Release</p>
@@ -29,7 +42,6 @@ export const createTheaterItem = function (movie) {
   const title = escapeHTML(movie.title);
   const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'NR';
 
-  // TMDB doesn't return showtimes natively,
   return `
     <div class="theaters__item" data-id="${movie.id}">
       <img src="${imageOrFallback(movie.poster_path)}" alt="" class="theaters__poster" loading="lazy" />
@@ -38,15 +50,7 @@ export const createTheaterItem = function (movie) {
         <div class="theaters__meta">
           <span><span aria-hidden="true">&#9733;</span> ${rating}</span>
         </div>
-        <div class="theaters__showtimes">
-          <span class="showtime">11:30 AM</span>
-          <span class="showtime">2:45 PM</span>
-          <span class="showtime">7:00 PM</span>
-        </div>
       </div>
-      <button class="theaters__ticket" title="Get Tickets" aria-label="Get tickets for ${title}">
-        <svg aria-hidden="true"><use href="${icons}#icon-ticket"></use></svg>
-      </button>
     </div>
   `;
 };
@@ -54,13 +58,16 @@ export const createTheaterItem = function (movie) {
 export const createActorItem = function (actor) {
   const name = escapeHTML(actor.name);
 
-  // Grab the titles of the 2 most famous things they are known for
+  // The titles of the 2 most famous things they are known for
   const knownFor = escapeHTML(
     (actor.known_for || [])
       .slice(0, 2)
       .map(item => item.title || item.name)
       .join(' • '),
   );
+
+  // TMDB popularity is a score, not a chart position
+  const popularity = actor.popularity ? Math.round(actor.popularity) : 'N/A';
 
   return `
     <div class="actor__item" data-id="${actor.id}">
@@ -70,7 +77,7 @@ export const createActorItem = function (actor) {
         <p>${knownFor}</p>
         <div class="actor__trend">
           <svg class="trend__icon" aria-hidden="true"><use href="${icons}#icon-trending-up"></use></svg>
-          <span>Trending #${actor.popularity.toFixed(0)}</span>
+          <span>Popularity ${popularity}</span>
         </div>
       </div>
     </div>

@@ -11,11 +11,10 @@
       name="description"
       content="TinyMoviez: browse trending movies, TV shows and anime, see what's coming soon and in theaters, and bookmark titles to watch later."
     />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Open+Sans:wght@300..800&display=swap"
       rel="stylesheet"
     />
 
@@ -147,6 +146,12 @@
           </nav>
 
           <form class="topbar__search">
+            <button type="submit" class="search__btn" aria-label="Search">
+              <svg class="search__icon">
+                <use href="src/img/icons.svg#icon-search"></use>
+              </svg>
+            </button>
+
             <input
               type="search"
               placeholder="Search"
@@ -154,12 +159,6 @@
               aria-label="Search movies and shows"
               enterkeyhint="search"
             />
-
-            <button type="submit" class="search__btn" aria-label="Search">
-              <svg class="search__icon">
-                <use href="src/img/icons.svg#icon-search"></use>
-              </svg>
-            </button>
           </form>
         </header>
 
@@ -226,13 +225,12 @@
             <h3>Coming Soon</h3>
           </div>
 
-          <div class="upcoming__list" data-widget-list="upcoming"></div>
+          <div class="upcoming__list"></div>
 
           <div class="widget__footer">
             <div class="widget__pagination">
               <button
                 class="widget__btn widget__btn--prev"
-                data-widget="upcoming"
                 data-direction="prev"
                 aria-label="Previous upcoming page"
               >
@@ -243,7 +241,6 @@
               <span class="widget__page-info">Page 1</span>
               <button
                 class="widget__btn widget__btn--next"
-                data-widget="upcoming"
                 data-direction="next"
                 aria-label="Next upcoming page"
               >
@@ -262,13 +259,12 @@
             <h3>In Theaters</h3>
           </div>
 
-          <div class="theaters__list" data-widget-list="theaters"></div>
+          <div class="theaters__list"></div>
 
           <div class="widget__footer">
             <div class="widget__pagination">
               <button
                 class="widget__btn widget__btn--prev"
-                data-widget="theaters"
                 data-direction="prev"
                 aria-label="Previous theater page"
               >
@@ -279,7 +275,6 @@
               <span class="widget__page-info">Page 1</span>
               <button
                 class="widget__btn widget__btn--next"
-                data-widget="theaters"
                 data-direction="next"
                 aria-label="Next theater page"
               >
@@ -298,13 +293,12 @@
             <h3>Popular Actors</h3>
           </div>
 
-          <div class="actors__list" data-widget-list="actors"></div>
+          <div class="actors__list"></div>
 
           <div class="widget__footer">
             <div class="widget__pagination">
               <button
                 class="widget__btn widget__btn--prev"
-                data-widget="actors"
                 data-direction="prev"
                 aria-label="Previous actors page"
               >
@@ -315,7 +309,6 @@
               <span class="widget__page-info">Page 1</span>
               <button
                 class="widget__btn widget__btn--next"
-                data-widget="actors"
                 data-direction="next"
                 aria-label="Next actors page"
               >
