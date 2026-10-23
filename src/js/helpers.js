@@ -1,5 +1,6 @@
 import { TIMEOUT_SEC, TMDB_BASE_URL } from './config';
 
+// A promise that only ever rejects, after s seconds (used in the race below)
 const timeout = function (s) {
   return new Promise(function (_, reject) {
     setTimeout(function () {
@@ -59,22 +60,25 @@ export const preloadImages = function (urls, maxMs = 3000) {
   return Promise.race([Promise.all(loads), limit]);
 };
 
+/**
+ * Fetches JSON from TMDB with a time limit.
+ * Throws on a timeout or a non-OK response; the controller shows the error.
+ */
 export const AJAX = async function (url, api) {
-  try {
-    const fetchRequest = fetch(url, {
-      headers: {
-        Authorization: `Bearer ${api}`,
-        'Content-Type': 'application/json',
-      }, // no await: start the request, don't wait
-    });
+  // No await here: start the request and pass the pending promise
+  // into the race, so the timeout can actually win
+  const fetchRequest = fetch(url, {
+    headers: {
+      Authorization: `Bearer ${api}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
-    const res = await Promise.race([fetchRequest, timeout(TIMEOUT_SEC)]);
-    const data = await res.json();
+  const res = await Promise.race([fetchRequest, timeout(TIMEOUT_SEC)]);
+  const data = await res.json();
 
-    if (!res.ok) throw new Error(`${data.status_message} (${res.status})`);
+  // fetch only rejects on network failure, so check the status ourselves
+  if (!res.ok) throw new Error(`${data.status_message} (${res.status})`);
 
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  return data;
 };
