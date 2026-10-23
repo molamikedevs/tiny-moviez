@@ -40,6 +40,21 @@ const getCategoryData = function (type) {
   return model.state.library[type];
 };
 
+// Ids of every bookmarked title, read from the model by the controller
+const getBookmarkedIds = function () {
+  return model.state.bookmarks.map(b => b.id);
+};
+
+/**
+ * Copies of the items with an isBookmarked flag, so the views can show
+ * the bookmark state without reading the model themselves.
+ * @param {Object[]} items - The items about to be rendered
+ */
+const withBookmarkFlags = function (items) {
+  const ids = getBookmarkedIds();
+  return items.map(item => ({ ...item, isBookmarked: ids.includes(item.id) }));
+};
+
 /**
  * Renders a category page: movies, TV, anime, trending, top rated,
  * bookmarks or recent.
@@ -94,7 +109,7 @@ const controlCategory = function (type) {
   const results = model.getSearchResult(data);
 
   // 4. Update the UI components
-  gridView.render(results);
+  gridView.render(withBookmarkFlags(results));
   paginationView.paginationRenderer(
     model.state.ui.page,
     model.getTotalPages(data),
@@ -111,7 +126,7 @@ const controlPagination = function (page) {
   const data = model.state.ui.activeData;
   const results = model.getSearchResult(data);
 
-  gridView.render(results);
+  gridView.render(withBookmarkFlags(results));
   paginationView.paginationRenderer(page, model.getTotalPages(data));
 };
 
@@ -179,7 +194,7 @@ const controlSearch = async function () {
 
     const results = model.getSearchResult(data);
 
-    gridView.render(results);
+    gridView.render(withBookmarkFlags(results));
 
     paginationView.paginationRenderer(
       model.state.ui.page,
@@ -203,7 +218,8 @@ const controlDashboard = async function () {
     return;
   }
 
-  // Start the hero with trending titles
+  // Start the hero with trending titles and the current bookmarks
+  heroView.setBookmarkedIds(getBookmarkedIds());
   heroView.setData(model.state.library.trending);
 
   upcomingView.render(model.state.upcoming);
@@ -270,7 +286,9 @@ const controlToggleBookmark = function (id) {
       paginationView.clear();
     } else {
       model.state.ui.page = Math.min(model.state.ui.page, totalPages);
-      gridView.render(model.getSearchResult(model.state.bookmarks));
+      gridView.render(
+        withBookmarkFlags(model.getSearchResult(model.state.bookmarks)),
+      );
       paginationView.paginationRenderer(model.state.ui.page, totalPages);
     }
   } else {
@@ -279,7 +297,7 @@ const controlToggleBookmark = function (id) {
   }
 
   // Keep the Hero button in sync
-  heroView.renderHero();
+  heroView.setBookmarkedIds(getBookmarkedIds());
 };
 
 /**
@@ -309,6 +327,7 @@ const init = async function () {
 
   heroView.addHandlerHeroNav();
   gridView.addHandlerBookmark(controlToggleBookmark);
+
   detailsView.handleDetailsClick(controlDetails);
 
   // Closing details puts the tab title back to the page underneath

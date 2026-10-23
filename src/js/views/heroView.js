@@ -1,5 +1,4 @@
 import { preloadImages } from '../helpers';
-import { state } from '../model';
 import View from './view';
 
 // w1280 is sharp at hero size and a fraction of the 'original' file size
@@ -17,6 +16,7 @@ class HeroView extends View {
   _current = 0;
   _timer;
   _renderId = 0;
+  _bookmarkedIds = []; // Set by the controller, so the view never reads the model
 
   // A slide needs a backdrop image to render
   _getSlides(data = []) {
@@ -41,6 +41,15 @@ class HeroView extends View {
 
     this.renderHero();
     this._startAutoSlide();
+  }
+
+  /**
+   * Receives the bookmarked ids from the controller and refreshes the button.
+   * @param {number[]} ids
+   */
+  setBookmarkedIds(ids = []) {
+    this._bookmarkedIds = ids;
+    this.renderHero();
   }
 
   show() {
@@ -97,7 +106,7 @@ class HeroView extends View {
       btnBookmark.dataset.type = movie.media_type;
 
       // Check if this movie is currently saved
-      const isBookmarked = state.bookmarks.some(b => b.id === movie.id);
+      const isBookmarked = this._bookmarkedIds.includes(movie.id);
       btnBookmark.textContent = isBookmarked ? 'Bookmarked' : 'Bookmark';
       btnBookmark.classList.toggle('is-bookmarked', isBookmarked);
       btnBookmark.setAttribute('aria-pressed', String(isBookmarked));
